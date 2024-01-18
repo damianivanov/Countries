@@ -24,8 +24,16 @@ class FavoritesListVC: UIViewController {
         Utils.shared.removeBadgeFavorite(tabBarController?.tabBar)
     }
     
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
+        if favorites.isEmpty{
+            view.subviews.forEach { v in
+                if type(of: v) == CFEmptyView.self {
+                    v.removeFromSuperview()
+                }
+            }
+        }
         NotificationCenter.default.removeObserver(self, name: Notification.Name("reloadData"), object: nil)
     }
     
@@ -38,7 +46,7 @@ class FavoritesListVC: UIViewController {
     }
     
     @objc private func updatedFavorites(notification: NSNotification){
-        self.dismiss(animated: true)
+            self.dismiss(animated: true)
         loadFavorites()
     }
     
@@ -54,15 +62,18 @@ class FavoritesListVC: UIViewController {
         }
     }
     
-    func updateUI(favorites: [CountryShort])
+    private func updateUI(favorites: [CountryShort])
     {
-        
-        if favorites.isEmpty{
-            emptyStateView(message: "You don't have any favorites. Go add some 🙂.", in: self.view)
-        }else{
-            self.favorites = favorites
-            DispatchQueue.main.async{self.collectionView.reloadData()}
+        self.favorites = favorites
+        if self.favorites.count == 0 {
+            DispatchQueue.main.async{
+                self.emptyStateView(message: "You don't have any favorites. Go add some 🙂.", in: self.view)
+            }
         }
+        DispatchQueue.main.async{ self.collectionView.reloadData()}
+
+        
+
     }
     
 }

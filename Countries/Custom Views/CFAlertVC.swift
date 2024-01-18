@@ -87,7 +87,7 @@ class CFAlertVC: UIViewController {
     
     func configureButton(){
         button.setTitle(buttonTitle ?? "OK", for: .normal)
-        button.addTarget(self, action: #selector(dissmisVC),for:.touchUpInside)
+        button.addTarget(self, action: #selector(dismissVC),for:.touchUpInside)
     }
     
     
@@ -106,7 +106,7 @@ class CFAlertVC: UIViewController {
     
     
     
-    @objc func dissmisVC() {
+    @objc func dismissVC() {
         dismiss(animated: true)
     }
 }

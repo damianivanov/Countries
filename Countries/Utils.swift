@@ -22,7 +22,7 @@ class Utils {
     func setFlowLayout(viewWidth: CGFloat, padding: CGFloat, itemSpacing: CGFloat, columns: CGFloat = 3 ) -> UICollectionViewFlowLayout {
         
         let availableWidth = viewWidth  - (padding*2) - (itemSpacing*2)
-        let itemWidth = availableWidth / columns
+        let itemWidth = floor(availableWidth / columns)
         
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.sectionInset = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
@@ -94,13 +94,13 @@ struct Constants {
     static let logoImagePath = "countriesLogo.png"
     static let padding: CGFloat = 10
     
-    static let heightScrollViewItem: CGFloat = 200
-    static let widthScrollViewItem: CGFloat = 170
+    static let heightScrollViewItem: CGFloat = 250
+    static let widthScrollViewItem: CGFloat = 200
     
     static let viewHeight: CGFloat = 120
     
     static let labelHeight: CGFloat = 20
-    static let buttonPadding: CGFloat = 50
+    static let buttonPadding: CGFloat = 20
     static let buttonSpacing: CGFloat = 30
     static let buttonHeight: CGFloat = 40
     //Alert
