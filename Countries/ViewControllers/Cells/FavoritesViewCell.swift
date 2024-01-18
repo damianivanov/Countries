@@ -18,11 +18,9 @@ class FavoritesViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         contentView.backgroundColor = .systemBackground
-        contentView.addSubview(countryNameTitle)
-        contentView.addSubview(flagImage)
+        contentView.addSubviews(countryNameTitle,flagImage)
         
-        configureFlagImageView()
-        configureCountryName()
+        configureConstraints()
     }
     
     func set(country: CountryShort) {
@@ -31,31 +29,23 @@ class FavoritesViewCell: UICollectionViewCell {
         flagImage.downloadFlag(urlString: country.flags.png)
         self.Id = Utils.shared.getFlagId(fromUrl: country.flags.png)
     }
-    
-    func configureFlagImageView() {
+    func configureConstraints(){
+        countryNameTitle.translatesAutoresizingMaskIntoConstraints = false
         flagImage.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             flagImage.topAnchor.constraint(equalTo: contentView.topAnchor),
             flagImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             flagImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            flagImage.heightAnchor.constraint(equalTo: flagImage.widthAnchor)
-        ])
-        
-    }
-    
-    func configureCountryName(){
-        countryNameTitle.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            countryNameTitle.topAnchor.constraint(equalTo: flagImage.bottomAnchor, constant: -5),
+            flagImage.heightAnchor.constraint(equalTo: flagImage.widthAnchor),
+            
+            countryNameTitle.topAnchor.constraint(equalTo: flagImage.bottomAnchor, constant: 5),
             countryNameTitle.leadingAnchor.constraint(equalTo: flagImage.leadingAnchor,constant: 5),
             countryNameTitle.trailingAnchor.constraint(equalTo: flagImage.trailingAnchor,constant: -5),
             countryNameTitle.heightAnchor.constraint(equalToConstant: 20)
-        
+            
         ])
-        
     }
-    
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

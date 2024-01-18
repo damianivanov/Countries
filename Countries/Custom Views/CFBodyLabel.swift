@@ -19,21 +19,32 @@ class CFBodyLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    init(textAlignment: NSTextAlignment){
+    init(text: String, textAlignment: NSTextAlignment, fontSize: CGFloat){
         super.init(frame: .zero)
+        self.text = text
+        self.font = UIFont.systemFont(ofSize: fontSize, weight: .regular)
+        self.textAlignment = textAlignment
+        configure()
+    }
+    
+    init(textAlignment: NSTextAlignment, fontSize: CGFloat){
+        super.init(frame: .zero)
+        self.font = UIFont.systemFont(ofSize: fontSize, weight: .regular)
         self.textAlignment = textAlignment
         configure()
     }
     
     
     func configure(){
+        
         translatesAutoresizingMaskIntoConstraints = false
         textColor = .secondaryLabel
         adjustsFontSizeToFitWidth = true
-        minimumScaleFactor = 0.7
-        font = UIFont.preferredFont(forTextStyle: .body)
+        minimumScaleFactor = 1
+        backgroundColor = .systemBackground
         lineBreakMode = .byWordWrapping
+        numberOfLines = 10
+        
     }
 
 }

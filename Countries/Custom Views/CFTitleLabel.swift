@@ -28,11 +28,18 @@ class CFTitleLabel: UILabel {
     }
     
     
+    init(textAlignment: NSTextAlignment, fontSize: CGFloat, weight: UIFont.Weight){
+        super.init(frame: .zero)
+        self.font = UIFont.systemFont(ofSize: fontSize, weight: weight)
+        self.textAlignment = textAlignment
+        configure()
+    }
+    
     func configure(){
         translatesAutoresizingMaskIntoConstraints = false
         textColor = .label
         adjustsFontSizeToFitWidth = true
-        minimumScaleFactor = 0.8
+        minimumScaleFactor = 0.5
         lineBreakMode = .byTruncatingTail
     }
 

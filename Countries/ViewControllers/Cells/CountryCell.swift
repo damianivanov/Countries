@@ -17,14 +17,29 @@ class CountryCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
            super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        configureUI()
+        configureConstraints()
+        
+    }
     
+    func configureUI(){
         contentView.backgroundColor = .systemBackground
-        contentView.addSubview(countryNameTitle)
-        contentView.addSubview(flagImage)
+        contentView.addSubviews(countryNameTitle,flagImage)
+    }
+    
+    func configureConstraints(){
+        NSLayoutConstraint.activate([
+            flagImage.topAnchor.constraint(equalTo: contentView.topAnchor),
+            flagImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
+            flagImage.widthAnchor.constraint(equalToConstant: 50),
+            flagImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         
-        configureFlagImageView()
-        configureCountryName()
-        
+            countryNameTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            countryNameTitle.leadingAnchor.constraint(equalTo: flagImage.trailingAnchor,constant: 10),
+            countryNameTitle.heightAnchor.constraint(equalToConstant: 30),
+            countryNameTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
+        ])
     }
     
     func set(country: CountryShort) {
@@ -32,29 +47,6 @@ class CountryCell: UITableViewCell {
         flagImage.image = nil
         flagImage.downloadFlag(urlString: country.flags.png)
         self.Id = Utils.shared.getFlagId(fromUrl: country.flags.png)
-    }
-    
-    
-    func configureFlagImageView(){
-        flagImage.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            flagImage.topAnchor.constraint(equalTo: contentView.topAnchor),
-            flagImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
-            flagImage.widthAnchor.constraint(equalToConstant: 50),
-            flagImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-        ])
-    }
-    
-    
-    func configureCountryName() {
-        countryNameTitle.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            countryNameTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            countryNameTitle.leadingAnchor.constraint(equalTo: flagImage.trailingAnchor,constant: 10),
-            countryNameTitle.heightAnchor.constraint(equalToConstant: 30),
-            countryNameTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
-        ])
-        
     }
     
     required init?(coder: NSCoder) {

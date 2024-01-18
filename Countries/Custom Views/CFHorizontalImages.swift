@@ -5,4 +5,9 @@
 //  Created by Damian Ivanov on 9.01.24.
 //
 
-import Foundation
+import UIKit
+
+
+class CFHorizontalImages: {
+    
+}

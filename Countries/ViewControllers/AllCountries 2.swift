@@ -1,5 +1,5 @@
 //
-//  CountryShort.swift
+//  allCountries.swift
 //  Countries
 //
 //  Created by Damian Ivanov on 4.01.24.

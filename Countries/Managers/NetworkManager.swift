@@ -14,9 +14,10 @@ class NetworkManager {
     
     private init(){
         cache.countLimit = 300
-        imageCache.countLimit = 40
+        imageCache.countLimit = 200
     }
     var endpoint = "https://restcountries.com/v3.1/"
+    
     
     func getCountry(country: String, completed: @escaping ([Country]?, CFError?) -> Void) {
         let endpointCountryInfo = "\(endpoint)name/\(country)"
@@ -186,12 +187,49 @@ class NetworkManager {
         task.resume()
     }
     
+    
+    func getCountryDescription(country: String,completed: @escaping (Result<QueryResponse,CFError>) -> Void) {
+        let stringURL = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=\(country)"
+        
+        guard let url = URL(string: stringURL) else {
+            completed(.failure(.invalidURL))
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            guard let self = self else {return}
+            if let _ = error {
+                completed(.failure(.unableToComplete))
+            }
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completed(.failure(.invalidURL))
+                return
+            }
+            guard let data = data else {
+                completed(.failure(.invalidData))
+                return
+            }
+            do {
+                let decoder = JSONDecoder()
+                let queryResponse = try decoder.decode(QueryResponse.self, from: data)
+                completed(.success(queryResponse))
+            } catch {
+                completed(.failure(.invalidData))
+                
+            }
+        }
+        task.resume()
+        
+    }
+    
+    
     func getCachedImage(imageURL: String) -> UIImage? {
         if let imageData = imageCache.object(forKey: imageURL as NSString){
             return imageData
         }
         return nil
     }
+    
     
     func setCachedImage(imageURL: String, image: UIImage) {
         imageCache.setObject(image, forKey: imageURL as NSString)

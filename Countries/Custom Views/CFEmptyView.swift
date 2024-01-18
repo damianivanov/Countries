@@ -8,13 +8,41 @@
 import UIKit
 
 class CFEmptyView: UIView {
+    
+    
+    var messageString: String = ""
+    let message = CFTitleLabel(textAlignment: .center, fontSize: 30, weight: .bold)
+    let image = UIImageView(image: UIImage(named: Constants.logoImagePath)!)
+    
+    
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    required init?(coder: NSCoder){
+        fatalError("init(coder:) has not been implemented")
     }
-    */
 
+    init(message: String) {
+        super.init(frame: .zero)
+        self.messageString = message
+    }
+    
+    
+    private func connfigure() {
+        addSubviews(message,image)
+        tamicFalse()
+        configureUI()
+    }
+    
+    private func configureUI(){
+        NSLayoutConstraint.activate([
+            
+            message.centerXAnchor.constraint(equalTo: centerXAnchor),
+            message.centerYAnchor.constraint(equalTo: centerYAnchor)
+        
+        ])
+        
+        message.text = messageString
+        message.backgroundColor = .secondaryLabel
+        
+    }
+    
 }
