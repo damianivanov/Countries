@@ -50,7 +50,7 @@ class Utils {
     }
     
     func getButtonWidth(viewWidth: CGFloat, padding: CGFloat = Constants.buttonPadding, buttonSpacing: CGFloat = Constants.buttonSpacing, buttonsCount: CGFloat = 2) -> CGFloat {
-            return (viewWidth - (padding * 2) - buttonSpacing * (buttonsCount-1)) / buttonsCount
+            return floor((viewWidth - ((padding * 2) - (buttonSpacing * (buttonsCount-1)))) / buttonsCount)
         
     }
     
@@ -100,9 +100,10 @@ struct Constants {
     static let viewHeight: CGFloat = 120
     
     static let labelHeight: CGFloat = 20
-    static let buttonPadding: CGFloat = 20
-    static let buttonSpacing: CGFloat = 30
+    static let buttonPadding: CGFloat = 50
+    static let buttonSpacing: CGFloat = 20
     static let buttonHeight: CGFloat = 40
+    static let buttonHeightPadding: CGFloat = 5
     //Alert
     static let alertHeight: CGFloat = 200
     static let alertWidth: CGFloat = 320

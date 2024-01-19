@@ -42,6 +42,7 @@
 		2DD053372B5456DD0084AD90 /* FavoritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD053362B5456DD0084AD90 /* FavoritesManager.swift */; };
 		2DD053392B54CE700084AD90 /* FavoritesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD053382B54CE700084AD90 /* FavoritesViewCell.swift */; };
 		2DD0533E2B5593F50084AD90 /* CFCountryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD0533D2B5593F50084AD90 /* CFCountryInfo.swift */; };
+		2DD3DC392B5A9E9F008F24CF /* CFMapsButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD3DC382B5A9E9F008F24CF /* CFMapsButtons.swift */; };
 		2DF0FA262B5040D40006B9D2 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DF0FA252B5040D40006B9D2 /* Utils.swift */; };
 /* End PBXBuildFile section */
 
@@ -102,6 +103,7 @@
 		2DD053362B5456DD0084AD90 /* FavoritesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesManager.swift; sourceTree = "<group>"; };
 		2DD053382B54CE700084AD90 /* FavoritesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewCell.swift; sourceTree = "<group>"; };
 		2DD0533D2B5593F50084AD90 /* CFCountryInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFCountryInfo.swift; sourceTree = "<group>"; };
+		2DD3DC382B5A9E9F008F24CF /* CFMapsButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFMapsButtons.swift; sourceTree = "<group>"; };
 		2DF0FA252B5040D40006B9D2 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -200,6 +202,7 @@
 				2D54B7D02B4D8EBC0084754B /* CFScrollableView.swift */,
 				2DD0533D2B5593F50084AD90 /* CFCountryInfo.swift */,
 				2D45D3082B591E9400CC1C17 /* CFEmptyView.swift */,
+				2DD3DC382B5A9E9F008F24CF /* CFMapsButtons.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -409,6 +412,7 @@
 				2D33433E2B482B810044C6C0 /* NetworkManager.swift in Sources */,
 				2D54B7D12B4D8EBC0084754B /* CFScrollableView.swift in Sources */,
 				2D33433C2B4795A40044C6C0 /* UIImageView+Extension.swift in Sources */,
+				2DD3DC392B5A9E9F008F24CF /* CFMapsButtons.swift in Sources */,
 				2D3342EE2B44CE4D0044C6C0 /* SceneDelegate.swift in Sources */,
 				2D33432C2B45F8020044C6C0 /* CFAlertVC.swift in Sources */,
 				2D3343222B44E1880044C6C0 /* CFButton.swift in Sources */,

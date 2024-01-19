@@ -16,9 +16,9 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
     var countryShort: CountryShort?
     var headerView = UIView()
     var photosView = UIView()
-    var appleMapButton = CFButton(backgroundColor: .red, title: "Apple Maps")
-    var googleMapsButton = CFButton(backgroundColor: .red, title: "Google Maps")
     var countryInfo = UITextView()
+    var mapsButtons = UIView()
+    var countryInfoSentences = 3
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,11 +50,8 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
     
     
     private func layoutUI(){
-        view.addSubviews(headerView,photosView,countryInfo,appleMapButton,googleMapsButton)
+        view.addSubviews(headerView,photosView,countryInfo,mapsButtons)
         view.tamicFalse()
-        
-        appleMapButton.addTarget(self, action: #selector(openMap), for: .touchUpInside)
-        googleMapsButton.addTarget(self, action: #selector(googleMap), for: .touchUpInside)
         
         countryInfo.layer.cornerRadius = 15
         countryInfo.clipsToBounds = true
@@ -73,17 +70,14 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
             countryInfo.topAnchor.constraint(equalTo: photosView.bottomAnchor, constant: Constants.padding),
             countryInfo.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: Constants.padding),
             countryInfo.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
-//            countryInfo.heightAnchor.constraint(equalToConstant: Constants.viewHeight),
+//            countryInfo.heightAnchor.constraint(equalToConstant: Constants.viewHeight*2),
             
-            appleMapButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: Constants.buttonPadding),
-            appleMapButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.buttonPadding),
-            appleMapButton.widthAnchor.constraint(equalToConstant: Utils.shared.getButtonWidth(viewWidth: view.bounds.width)),
-            appleMapButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
+            mapsButtons.topAnchor.constraint(equalTo: countryInfo.bottomAnchor,constant: Constants.padding),
+            mapsButtons.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: Constants.padding),
+            mapsButtons.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
+            mapsButtons.heightAnchor.constraint(equalToConstant: Constants.buttonHeight + 2*Constants.padding),
+//            mapsButtons.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.padding)
             
-            googleMapsButton.centerYAnchor.constraint(equalTo: appleMapButton.centerYAnchor),
-            googleMapsButton.leadingAnchor.constraint(equalTo: appleMapButton.trailingAnchor, constant: Constants.buttonSpacing),
-            googleMapsButton.widthAnchor.constraint(equalToConstant: Utils.shared.getButtonWidth(viewWidth: view.bounds.width)),
-            googleMapsButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
         ])
         
     }
@@ -119,8 +113,7 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
             guard let country = country else {
                 self.presentCFAlertOnMainThread(title: "Something went wrong", bodyMessage: error?.rawValue ?? "", buttonText: "Ok")
                 DispatchQueue.main.async{
-                    self.appleMapButton.isHidden = true
-                    self.googleMapsButton.isHidden = true
+                    self.mapsButtons.isHidden = true
                 }
                 return
             }
@@ -128,6 +121,7 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
                 guard let country = country.first else {return}
                 self.country = country
                 self.add(childVC: CFHeaderInfo(country: country), to: self.headerView)
+                self.add(childVC: CFMapsButtons(country: country), to: self.mapsButtons)
             }
         }
     }
@@ -154,7 +148,7 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
     private func updateUI(_ response: QueryResponse){
         guard let longInfo = response.query.pages.first?.value.extract else {return}
         DispatchQueue.main.async{
-            let text = Utils.shared.reduceCountryInfo(longInfo: longInfo, sentencesCount: 4)
+            let text = Utils.shared.reduceCountryInfo(longInfo: longInfo, sentencesCount: self.countryInfoSentences)
             self.countryInfo.text = text
             NSLayoutConstraint.activate([
                 self.countryInfo.heightAnchor.constraint(equalToConstant: self.countryInfo.contentSize.height)
@@ -162,17 +156,4 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
             self.countryInfo.sizeToFit()
         }
     }
-    
-    @objc private func openMap() {
-        let urlString = "https://maps.apple.com/?q=\((country?.urlName)!)"
-        guard let url = URL(string: urlString) else {return}
-        UIApplication.shared.open(url, options: [:]) { result in}
-    }
-    
-    @objc private func googleMap() {
-        let urlString = country.maps.googleMaps
-        guard let url = URL(string: urlString) else {return}
-        UIApplication.shared.open(url, options: [:]) { result in}
-    }
-    
 }
