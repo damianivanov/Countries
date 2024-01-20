@@ -75,17 +75,21 @@ class CFHeaderInfo: UIViewController {
             countryName.heightAnchor.constraint(equalToConstant: Constants.labelHeight*2),
 
             favoriteIconImageView.centerYAnchor.constraint(equalTo: countryName.centerYAnchor),
-            favoriteIconImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding*2),
+            favoriteIconImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                            constant: -Constants.padding*2),
             favoriteIconImageView.heightAnchor.constraint(equalToConstant: 25),
             favoriteIconImageView.widthAnchor.constraint(equalToConstant: 30),
 
-            locationImageView.bottomAnchor.constraint(equalTo: flagImageView.bottomAnchor, constant: -Constants.padding),
-            locationImageView.leadingAnchor.constraint(equalTo: flagImageView.trailingAnchor, constant: Constants.padding),
+            locationImageView.bottomAnchor.constraint(equalTo: flagImageView.bottomAnchor,
+                                                      constant: -Constants.padding),
+            locationImageView.leadingAnchor.constraint(equalTo: flagImageView.trailingAnchor,
+                                                       constant: Constants.padding),
             locationImageView.heightAnchor.constraint(equalToConstant: Constants.labelHeight),
             locationImageView.widthAnchor.constraint(equalToConstant: Constants.labelHeight),
 
             capitalLabel.topAnchor.constraint(equalTo: locationImageView.topAnchor),
-            capitalLabel.leadingAnchor.constraint(equalTo: locationImageView.trailingAnchor, constant: Constants.padding),
+            capitalLabel.leadingAnchor.constraint(equalTo: locationImageView.trailingAnchor,
+                                                  constant: Constants.padding),
             capitalLabel.heightAnchor.constraint(equalToConstant: Constants.labelHeight),
             capitalLabel.widthAnchor.constraint(equalToConstant: 100),
 
@@ -115,7 +119,8 @@ class CFHeaderInfo: UIViewController {
         populationImageVIew.image = UIImage(systemName: "person.2.fill")
         populationImageVIew.tintColor = .secondaryLabel
 
-        favoriteIconImageView.image =  isFavorited ? UIImage(systemName: favoriteFillIconString) : UIImage(systemName: favoriteIconString)
+        favoriteIconImageView.image =  isFavorited ? UIImage(systemName: favoriteFillIconString) :
+        UIImage(systemName: favoriteIconString)
 
         favoriteIconImageView.tintColor = .systemYellow
 

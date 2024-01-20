@@ -107,7 +107,9 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
         NetworkManager.shared.getCountry(country: countryName) { [weak self] country, error in
             guard let self = self else {return}
             guard let country = country else {
-                self.presentCFAlertOnMainThread(title: Messages.somethingWentWrong, bodyMessage: error?.rawValue ?? "", buttonText: Messages.okMessage)
+                self.presentCFAlertOnMainThread(title: Messages.somethingWentWrong,
+                                                bodyMessage: error?.rawValue ?? "",
+                                                buttonText: Messages.okMessage)
                 DispatchQueue.main.async {
                     self.mapsButtons.isHidden = true
                 }

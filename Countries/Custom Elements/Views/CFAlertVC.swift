@@ -63,12 +63,14 @@ class CFAlertVC: UIViewController {
 
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Constants.alertPadding),
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.alertPadding),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.alertPadding),
+            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
+                                                 constant: -Constants.alertPadding),
             titleLabel.heightAnchor.constraint(equalToConstant: 30),
 
             bodyLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Constants.padding),
             bodyLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Constants.alertPadding),
-            bodyLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Constants.alertPadding),
+            bodyLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
+                                                constant: -Constants.alertPadding),
             bodyLabel.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -Constants.padding),
 
             button.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -Constants.alertPadding),

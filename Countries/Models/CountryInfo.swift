@@ -14,7 +14,6 @@ struct Query: Decodable {
 
 struct Page: Decodable {
     let pageid: Int
-    let ns: Int
     let title: String
     let extract: String
 }

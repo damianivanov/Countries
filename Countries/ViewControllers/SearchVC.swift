@@ -15,6 +15,7 @@ class SearchVC: UIViewController {
     let searchCountryButton = CFButton(backgroundColor: .systemRed, title: "Search Country")
     let allCountriesButton = CFButton(backgroundColor: .systemGreen, title: "All Countries")
     var isCountryEntered: Bool { return !countryTextField.text!.isEmpty }
+    let buttonPadding: CGFloat = 60
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,23 +59,24 @@ class SearchVC: UIViewController {
         NSLayoutConstraint.activate([
             logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImageView.widthAnchor.constraint(equalToConstant: 320),
-            logoImageView.heightAnchor.constraint(equalToConstant: 270),
+            logoImageView.widthAnchor.constraint(equalToConstant: screenWidth),
+            logoImageView.heightAnchor.constraint(equalToConstant: screenWidth*0.9),
 
-            allCountriesButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20),
-            allCountriesButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60),
-            allCountriesButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60),
-            allCountriesButton.heightAnchor.constraint(equalToConstant: 50),
+            allCountriesButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.padding*2),
+            allCountriesButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: buttonPadding),
+            allCountriesButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -buttonPadding),
+            allCountriesButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
 
             countryTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 80),
-            countryTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
-            countryTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
-            countryTextField.heightAnchor.constraint(equalToConstant: 50),
+            countryTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: buttonPadding),
+            countryTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -buttonPadding),
+            countryTextField.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
 
-            searchCountryButton.bottomAnchor.constraint(equalTo: allCountriesButton.topAnchor, constant: -10),
-            searchCountryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 60),
-            searchCountryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -60),
-            searchCountryButton.heightAnchor.constraint(equalToConstant: 50)
+            searchCountryButton.bottomAnchor.constraint(equalTo: allCountriesButton.topAnchor,
+                                                        constant: -Constants.padding),
+            searchCountryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: buttonPadding),
+            searchCountryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -buttonPadding),
+            searchCountryButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight)
         ])
     }
 
@@ -98,7 +100,8 @@ class SearchVC: UIViewController {
 
     @objc func pushDetailsVC() {
         guard isCountryEntered else {
-            presentCFAlertOnMainThread(title: Messages.emptyCountry, bodyMessage: Messages.emptyCountrySearch, buttonText: Messages.okMessage)
+            presentCFAlertOnMainThread(title: Messages.emptyCountry,
+                                       bodyMessage: Messages.emptyCountrySearch, buttonText: Messages.okMessage)
             return
         }
 

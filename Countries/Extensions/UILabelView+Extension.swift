@@ -19,8 +19,10 @@ extension UILabel {
         } else {
             attributedString = NSMutableAttributedString(string: labelText)
         }
-        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
-        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle,
+                                      range: NSRange(location: 0, length: attributedString.length))
+        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle,
+                                      range: NSRange(location: 0, length: attributedString.length))
         self.attributedText = attributedString
     }
 }

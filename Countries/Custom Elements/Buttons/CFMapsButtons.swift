@@ -36,25 +36,29 @@ class CFMapsButtons: UIViewController {
         NSLayoutConstraint.activate([
             appleMapButton.topAnchor.constraint(equalTo: view.topAnchor, constant: Constants.padding),
             appleMapButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding),
-            appleMapButton.widthAnchor.constraint(equalToConstant: Utils.shared.getButtonWidth(viewWidth: view.bounds.width)),
+            appleMapButton.widthAnchor.constraint(equalToConstant:
+                                                    Utils.shared.getButtonWidth(viewWidth: view.bounds.width)),
             appleMapButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
 
             googleMapsButton.centerYAnchor.constraint(equalTo: appleMapButton.centerYAnchor),
             googleMapsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
-            googleMapsButton.widthAnchor.constraint(equalToConstant: Utils.shared.getButtonWidth(viewWidth: view.bounds.width)),
+            googleMapsButton.widthAnchor.constraint(equalToConstant:
+                                                        Utils.shared.getButtonWidth(viewWidth: view.bounds.width)),
             googleMapsButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight)
         ])
 
     }
 
     @objc private func openMap() {
-        let urlString = "https://maps.apple.com/?q=\(country?.urlName)"
+        guard let country  = country else {return}
+        let urlString = "https://maps.apple.com/?q=\(country.urlName)"
         guard let url = URL(string: urlString) else {return}
         UIApplication.shared.open(url, options: [:]) { _ in}
     }
 
     @objc private func googleMap() {
-        guard let urlString = country?.maps.googleMaps else {return}
+        guard let country  = country else {return}
+        let urlString = country.maps.googleMaps
         guard let url = URL(string: urlString) else {return}
         UIApplication.shared.open(url, options: [:]) { _ in}
     }

@@ -10,7 +10,6 @@ import UIKit
 class CountryCell: UITableViewCell {
 
     static var cellIdentifier = "countryCell"
-    var Id = ""
     var flagImage = CFCountryFlag(frame: .zero)
     var countryNameTitle = CFTitleLabel(textAlignment: .left, fontSize: 20, weight: .bold)
 
@@ -35,7 +34,7 @@ class CountryCell: UITableViewCell {
             flagImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
 
             countryNameTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            countryNameTitle.leadingAnchor.constraint(equalTo: flagImage.trailingAnchor, constant: 10),
+            countryNameTitle.leadingAnchor.constraint(equalTo: flagImage.trailingAnchor, constant: Constants.padding),
             countryNameTitle.heightAnchor.constraint(equalToConstant: 30),
             countryNameTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
         ])
@@ -45,7 +44,6 @@ class CountryCell: UITableViewCell {
         countryNameTitle.text = country.name.common
         flagImage.image = nil
         flagImage.downloadFlag(urlString: country.flags.png)
-        self.Id = Utils.shared.getFlagId(fromUrl: country.flags.png)
     }
 
     required init?(coder: NSCoder) {

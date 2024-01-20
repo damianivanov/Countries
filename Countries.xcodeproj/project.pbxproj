@@ -41,7 +41,6 @@
 		2DACC8E92B4A1B150018B0DD /* CFCountryFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DACC8E82B4A1B150018B0DD /* CFCountryFlag.swift */; };
 		2DD053372B5456DD0084AD90 /* FavoritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD053362B5456DD0084AD90 /* FavoritesManager.swift */; };
 		2DD053392B54CE700084AD90 /* FavoritesViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD053382B54CE700084AD90 /* FavoritesViewCell.swift */; };
-		2DD0533E2B5593F50084AD90 /* CFCountryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD0533D2B5593F50084AD90 /* CFCountryInfo.swift */; };
 		2DD3DC392B5A9E9F008F24CF /* CFMapsButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD3DC382B5A9E9F008F24CF /* CFMapsButtons.swift */; };
 		2DF0FA262B5040D40006B9D2 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DF0FA252B5040D40006B9D2 /* Utils.swift */; };
 /* End PBXBuildFile section */
@@ -102,7 +101,6 @@
 		2DACC8E82B4A1B150018B0DD /* CFCountryFlag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFCountryFlag.swift; sourceTree = "<group>"; };
 		2DD053362B5456DD0084AD90 /* FavoritesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesManager.swift; sourceTree = "<group>"; };
 		2DD053382B54CE700084AD90 /* FavoritesViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewCell.swift; sourceTree = "<group>"; };
-		2DD0533D2B5593F50084AD90 /* CFCountryInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFCountryInfo.swift; sourceTree = "<group>"; };
 		2DD3DC382B5A9E9F008F24CF /* CFMapsButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFMapsButtons.swift; sourceTree = "<group>"; };
 		2DF0FA252B5040D40006B9D2 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -162,7 +160,7 @@
 				2D3342F42B44CE4E0044C6C0 /* Assets.xcassets */,
 				2D3342F92B44CE4E0044C6C0 /* Info.plist */,
 				2D45D30A2B5977DB00CC1C17 /* Flags.xcdatamodeld */,
-				2D33432D2B4712180044C6C0 /* Custom Views */,
+				2D33432D2B4712180044C6C0 /* Custom Elements */,
 				2D3343302B472B1C0044C6C0 /* ViewControllers */,
 				2D3343312B472B5D0044C6C0 /* Extensions */,
 				2DD053352B544FB50084AD90 /* Managers */,
@@ -189,22 +187,16 @@
 			path = CountriesUITests;
 			sourceTree = "<group>";
 		};
-		2D33432D2B4712180044C6C0 /* Custom Views */ = {
+		2D33432D2B4712180044C6C0 /* Custom Elements */ = {
 			isa = PBXGroup;
 			children = (
-				2D33432B2B45F8020044C6C0 /* CFAlertVC.swift */,
-				2D3343212B44E1880044C6C0 /* CFButton.swift */,
-				2D3343232B44ED8C0044C6C0 /* CFTextField.swift */,
-				2D3343272B45F2170044C6C0 /* CFTitleLabel.swift */,
-				2D3343292B45F5B10044C6C0 /* CFBodyLabel.swift */,
-				2DACC8E82B4A1B150018B0DD /* CFCountryFlag.swift */,
-				2D7E6E102B4B6EF300A7BFE8 /* CFHeaderInfo.swift */,
-				2D54B7D02B4D8EBC0084754B /* CFScrollableView.swift */,
-				2DD0533D2B5593F50084AD90 /* CFCountryInfo.swift */,
-				2D45D3082B591E9400CC1C17 /* CFEmptyView.swift */,
-				2DD3DC382B5A9E9F008F24CF /* CFMapsButtons.swift */,
+				2DDB10412B5BEB880047EE55 /* TextFields */,
+				2DDB10402B5BEB7E0047EE55 /* Images */,
+				2DDB103F2B5BEB660047EE55 /* Labels */,
+				2DDB103D2B5BEAC00047EE55 /* Views */,
+				2DDB103E2B5BEB570047EE55 /* Buttons */,
 			);
-			path = "Custom Views";
+			path = "Custom Elements";
 			sourceTree = "<group>";
 		};
 		2D3343302B472B1C0044C6C0 /* ViewControllers */ = {
@@ -257,6 +249,51 @@
 				2DD053382B54CE700084AD90 /* FavoritesViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		2DDB103D2B5BEAC00047EE55 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2D33432B2B45F8020044C6C0 /* CFAlertVC.swift */,
+				2D45D3082B591E9400CC1C17 /* CFEmptyView.swift */,
+				2D54B7D02B4D8EBC0084754B /* CFScrollableView.swift */,
+				2D7E6E102B4B6EF300A7BFE8 /* CFHeaderInfo.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2DDB103E2B5BEB570047EE55 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				2D3343212B44E1880044C6C0 /* CFButton.swift */,
+				2DD3DC382B5A9E9F008F24CF /* CFMapsButtons.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		2DDB103F2B5BEB660047EE55 /* Labels */ = {
+			isa = PBXGroup;
+			children = (
+				2D3343272B45F2170044C6C0 /* CFTitleLabel.swift */,
+				2D3343292B45F5B10044C6C0 /* CFBodyLabel.swift */,
+			);
+			path = Labels;
+			sourceTree = "<group>";
+		};
+		2DDB10402B5BEB7E0047EE55 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				2DACC8E82B4A1B150018B0DD /* CFCountryFlag.swift */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		2DDB10412B5BEB880047EE55 /* TextFields */ = {
+			isa = PBXGroup;
+			children = (
+				2D3343232B44ED8C0044C6C0 /* CFTextField.swift */,
+			);
+			path = TextFields;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -399,6 +436,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/swiftLint",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -430,7 +468,6 @@
 				2D45D30C2B5977DC00CC1C17 /* Flags.xcdatamodeld in Sources */,
 				2D3342F02B44CE4D0044C6C0 /* ViewController.swift in Sources */,
 				2D3342EC2B44CE4D0044C6C0 /* AppDelegate.swift in Sources */,
-				2DD0533E2B5593F50084AD90 /* CFCountryInfo.swift in Sources */,
 				2D33433E2B482B810044C6C0 /* NetworkManager.swift in Sources */,
 				2D54B7D12B4D8EBC0084754B /* CFScrollableView.swift in Sources */,
 				2D33433C2B4795A40044C6C0 /* UIImageView+Extension.swift in Sources */,

@@ -147,7 +147,9 @@ class NetworkManager {
             completed(nil, .invalidClientKey)
             return
         }
-        let stringUrl = "https://api.unsplash.com/search/photos?query=\(query)&client_id=\(clientKey)&page=\(page)&order_by=popular&orientation=portrait"
+        let endpoint = "https://api.unsplash.com/search/photos"
+        let orderBy = "order_by=popular&orientation=portrait"
+        let stringUrl = "\(endpoint)?query=\(query)&client_id=\(clientKey)&page=\(page)&\(orderBy)"
         guard let url = URL(string: stringUrl) else {
             completed(nil, .invalidURL)
             return
@@ -181,14 +183,15 @@ class NetworkManager {
     }
 
     func getCountryDescription(country: String, completed: @escaping (Result<QueryResponse, CFError>) -> Void) {
-        let stringURL = "https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&titles=\(country)"
+        let endpoint = "https://en.wikipedia.org/w/api.php?"
+        let format = "format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&"
+        let stringURL = "\(endpoint)\(format)titles=\(country)"
         guard let url = URL(string: stringURL) else {
             completed(.failure(.invalidURL))
             return
         }
 
-        let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            guard let self = self else {return}
+        let task = URLSession.shared.dataTask(with: url) {data, response, error in
             if error != nil {
                 completed(.failure(.unableToComplete))
             }

@@ -82,7 +82,8 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
         for index in 0..<unsplashLinks.count {
             DispatchQueue.global(qos: .userInitiated).async {
                 NetworkManager.shared.downlodImage(imageURL: self.unsplashLinks[index].regular) { image, _ in
-                    let frame = CGRect(x: self.getXposition(index), y: 0, width: Constants.widthScrollViewItem, height: Constants.heightScrollViewItem)
+                    let frame = CGRect(x: self.getXposition(index), y: 0,
+                                       width: Constants.widthScrollViewItem, height: Constants.heightScrollViewItem)
                     DispatchQueue.main.async {
                         let subView = UIImageView(frame: frame)
                         subView.image = image
