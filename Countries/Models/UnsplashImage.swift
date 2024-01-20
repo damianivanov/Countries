@@ -7,8 +7,7 @@
 
 import UIKit
 
-
-struct UnsplashImage:Decodable {
+struct UnsplashImage: Decodable {
     var id: String
     var urls: UnsplashURLs
 }

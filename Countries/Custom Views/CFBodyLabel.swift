@@ -13,30 +13,28 @@ class CFBodyLabel: UILabel {
         super.init(frame: frame)
         configure()
     }
-    
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    init(text: String, textAlignment: NSTextAlignment, fontSize: CGFloat){
+
+    init(text: String, textAlignment: NSTextAlignment, fontSize: CGFloat) {
         super.init(frame: .zero)
         self.text = text
         self.font = UIFont.systemFont(ofSize: fontSize, weight: .regular)
         self.textAlignment = textAlignment
         configure()
     }
-    
-    init(textAlignment: NSTextAlignment, fontSize: CGFloat){
+
+    init(textAlignment: NSTextAlignment, fontSize: CGFloat) {
         super.init(frame: .zero)
         self.font = UIFont.systemFont(ofSize: fontSize, weight: .regular)
         self.textAlignment = textAlignment
         configure()
     }
-    
-    
-    func configure(){
-        
+
+    func configure() {
+
         translatesAutoresizingMaskIntoConstraints = false
         textColor = .secondaryLabel
         adjustsFontSizeToFitWidth = true
@@ -44,7 +42,7 @@ class CFBodyLabel: UILabel {
         backgroundColor = .systemBackground
         lineBreakMode = .byWordWrapping
         numberOfLines = 10
-        
+
     }
 
 }

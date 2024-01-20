@@ -8,10 +8,10 @@
 import Foundation
 
 struct Country: Decodable {
-    
+
     var name: Name
     var flags: Flags
-    
+
     var timezones: [String]
     var continents: [String]
     var capital: [String]?
@@ -20,7 +20,7 @@ struct Country: Decodable {
     var area: Int
     var maps: Maps
     var latlng: [Double]
-    
+
     enum CodingKeys: CodingKey {
         case name
         case flags
@@ -52,24 +52,21 @@ struct Name: Codable {
     var official: String
 }
 
-struct CountryShort: Codable,Hashable {
+struct CountryShort: Codable, Hashable {
 
-    
     static func == (lhs: CountryShort, rhs: CountryShort) -> Bool {
         return lhs.flags.png == rhs.flags.png
     }
- 
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(flags.png)
     }
-    
+
     var flags: Flags
     var name: Name
-    
+
     var flagURL: URL {
         return URL(string: flags.png)!
     }
-    
-}
 
+}

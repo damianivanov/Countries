@@ -1,9 +1,8 @@
-
 struct QueryResponse: Decodable {
     let batchComplete: String
     let query: Query
-    
-    enum CodingKeys: String,CodingKey {
+
+    enum CodingKeys: String, CodingKey {
         case batchComplete = "batchcomplete"
         case query
     }

@@ -8,15 +8,14 @@
 import UIKit
 
 extension UIView {
-    
-    func addSubviews(_ views: UIView...){
+
+    func addSubviews(_ views: UIView...) {
         views.forEach(addSubview)
     }
-    
-    func tamicFalse(){
+
+    func tamicFalse() {
         subviews.forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
         }
     }
 }
-

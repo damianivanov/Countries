@@ -7,63 +7,158 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "B9349817-152E-48C3-BB65-C483B8EF34F5"
+            uuid = "060AE8A6-6BE4-4013-9BA8-80AEFEEBBAF6"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Countries/Utils.swift"
+            filePath = "Countries/Custom Views/CFScrollableView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
-            landmarkName = "addBadgeToFavorite(_:)"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "populateScrollView()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "060AE8A6-6BE4-4013-9BA8-80AEFEEBBAF6 - b9edf2e017b95cc4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 @Sendable () -&gt; () in Countries.CFScrollableView.populateScrollView() -&gt; ()"
+                  moduleName = "Countries"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damian/Desktop/Countries/Countries/Custom%20Views/CFScrollableView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84"
+                  offsetFromSymbolStart = "64">
+               </Location>
+               <Location
+                  uuid = "060AE8A6-6BE4-4013-9BA8-80AEFEEBBAF6 - 39d5683fb819db21"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.UIImage&gt;, Swift.Optional&lt;Countries.CFError&gt;) -&gt; () in closure #2 @Sendable () -&gt; () in Countries.CFScrollableView.populateScrollView() -&gt; ()"
+                  moduleName = "Countries"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damian/Desktop/Countries/Countries/Custom%20Views/CFScrollableView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84"
+                  offsetFromSymbolStart = "224">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C7B4748C-969F-4952-BE51-F87F4FE7CBE0"
+            uuid = "0F503B47-E653-40D3-A4C5-EE94A405BAB7"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Countries/Utils.swift"
+            filePath = "Countries/Custom Views/CFScrollableView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
-            landmarkName = "addBadgeToFavorite(_:)"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "populateScrollView()"
             landmarkType = "7">
             <Locations>
                <Location
-                  uuid = "C7B4748C-969F-4952-BE51-F87F4FE7CBE0 - 8e93f8be4240a527"
+                  uuid = "0F503B47-E653-40D3-A4C5-EE94A405BAB7 - 601365fe5b81c798"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Countries.Utils.addBadgeToFavorite(Swift.Optional&lt;__C.UITabBar&gt;) -&gt; ()"
+                  symbolName = "Countries.CFScrollableView.populateScrollView() -&gt; ()"
                   moduleName = "Countries"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/damian/Desktop/Countries/Countries/Utils.swift"
+                  urlString = "file:///Users/damian/Desktop/Countries/Countries/Custom%20Views/CFScrollableView.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "37"
-                  endingLineNumber = "37"
-                  offsetFromSymbolStart = "448">
+                  startingLineNumber = "81"
+                  endingLineNumber = "81"
+                  offsetFromSymbolStart = "376">
                </Location>
                <Location
-                  uuid = "C7B4748C-969F-4952-BE51-F87F4FE7CBE0 - 8e93f8be4240a527"
+                  uuid = "0F503B47-E653-40D3-A4C5-EE94A405BAB7 - 428473641651d21e"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "Countries.Utils.addBadgeToFavorite(Swift.Optional&lt;__C.UITabBar&gt;) -&gt; ()"
+                  symbolName = "closure #1 (__C.UIView) -&gt; () in Countries.CFScrollableView.populateScrollView() -&gt; ()"
                   moduleName = "Countries"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/damian/Desktop/Countries/Countries/Utils.swift"
+                  urlString = "file:///Users/damian/Desktop/Countries/Countries/Custom%20Views/CFScrollableView.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "37"
-                  endingLineNumber = "37"
-                  offsetFromSymbolStart = "656">
+                  startingLineNumber = "81"
+                  endingLineNumber = "81"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1EB41516-41E7-45C6-AE82-933F2F9C287F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Countries/Managers/NetworkManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
+            landmarkName = "searchImagesQuery(query:page:completed:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "1EB41516-41E7-45C6-AE82-933F2F9C287F - a8258ea6b34ca403"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Countries.NetworkManager.searchImagesQuery(query: Swift.String, page: Swift.Int, completed: (Swift.Optional&lt;Swift.Array&lt;Countries.UnsplashURLs&gt;&gt;, Swift.Optional&lt;Countries.CFError&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Countries"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damian/Desktop/Countries/Countries/Managers/NetworkManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "152"
+                  endingLineNumber = "152"
+                  offsetFromSymbolStart = "1216">
+               </Location>
+               <Location
+                  uuid = "1EB41516-41E7-45C6-AE82-933F2F9C287F - 4c210f8b3121775e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Countries.NetworkManager.searchImagesQuery(query: Swift.String, page: Swift.Int, completed: (Swift.Optional&lt;Swift.Array&lt;Countries.UnsplashURLs&gt;&gt;, Swift.Optional&lt;Countries.CFError&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Countries"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damian/Desktop/Countries/Countries/Managers/NetworkManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "152"
+                  endingLineNumber = "152"
+                  offsetFromSymbolStart = "208">
+               </Location>
+               <Location
+                  uuid = "1EB41516-41E7-45C6-AE82-933F2F9C287F - a8258ea6b34ca422"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Countries.NetworkManager.searchImagesQuery(query: Swift.String, page: Swift.Int, completed: (Swift.Optional&lt;Swift.Array&lt;Countries.UnsplashURLs&gt;&gt;, Swift.Optional&lt;Countries.CFError&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Countries"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damian/Desktop/Countries/Countries/Managers/NetworkManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "151"
+                  endingLineNumber = "151"
+                  offsetFromSymbolStart = "1192">
                </Location>
             </Locations>
          </BreakpointContent>

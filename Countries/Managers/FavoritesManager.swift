@@ -8,25 +8,24 @@
 import Foundation
 
 struct FavoritesManager {
-    
-    
+
     static private let defaults = UserDefaults.standard
     enum ActionType {
         case add
         case remove
     }
-    
+
     enum Keys {
         static let favorites = "favorites"
     }
-    
-    static func update(country: CountryShort,actionType: ActionType, completed: @escaping (CFError?) -> Void){
+
+    static func update(country: CountryShort, actionType: ActionType, completed: @escaping (CFError?) -> Void) {
         getFavorites { result in
             switch result {
             case .success(let favorites):
                 var retrievedFavorites = favorites
-                
-                switch actionType{
+
+                switch actionType {
                 case .add:
                     guard !retrievedFavorites.contains(country) else {
                         completed(.alreadyFavorited)
@@ -42,8 +41,8 @@ struct FavoritesManager {
             }
         }
     }
-    
-    static func getFavorites(completed: @escaping (Result<[CountryShort],CFError>) -> Void){
+
+    static func getFavorites(completed: @escaping (Result<[CountryShort], CFError>) -> Void) {
         guard let favoritesData = defaults.object(forKey: Keys.favorites) as? Data else {
             completed(.success([]))
             return
@@ -52,24 +51,23 @@ struct FavoritesManager {
             let decoder = JSONDecoder()
             let favorites = try decoder.decode([CountryShort].self, from: favoritesData)
             completed(.success(favorites))
-        }catch{
+        } catch {
             completed(.failure(.unableToFavorite))
         }
     }
-    
-    
+
     static func setFavorites(favorites: [CountryShort]) -> CFError? {
-        do{
+        do {
          let encoder = JSONEncoder()
             let encodedFavorites = try encoder.encode(favorites)
             defaults.setValue(encodedFavorites, forKey: Keys.favorites)
             return nil
-        }catch{
+        } catch {
             return .unableToFavorite
         }
     }
-    
-    static func isAlredyFavorited(country: CountryShort) -> Bool  {
+
+    static func isAlredyFavorited(country: CountryShort) -> Bool {
         guard let favoritesData = defaults.object(forKey: Keys.favorites) as? Data else {
             return false
         }
@@ -77,7 +75,7 @@ struct FavoritesManager {
             let decoder = JSONDecoder()
             let favorites = try decoder.decode([CountryShort].self, from: favoritesData)
             return favorites.contains { $0 == country}
-        }catch{
+        } catch {
             return false
         }
     }
