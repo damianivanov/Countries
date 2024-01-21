@@ -9,18 +9,18 @@ import UIKit
 
 class NetworkManager {
     static let shared = NetworkManager()
-    let cache = NSCache<NSString, NSData>()
-    let imageCache = NSCache<NSString, UIImage>()
+    let flagsCache = NSCache<NSString, NSData>()
+    let imageCache = NSCache<NSString, NSData>()
 
     private init() {
-        cache.countLimit = 300
-        imageCache.countLimit = 200
+        flagsCache.countLimit = 300
+        imageCache.countLimit = 20
     }
-    var endpoint = "https://restcountries.com/v3.1/"
 
     func getCountry(country: String, completed: @escaping ([Country]?, CFError?) -> Void) {
-        let endpointCountryInfo = "\(endpoint)name/\(country)"
-        guard let url = URL(string: endpointCountryInfo) else {
+        let endpoint = "https://restcountries.com/v3.1/name/\(country)"
+        guard let urlString = endpoint.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {return}
+        guard let url = URL(string: urlString) else {
             completed(nil, .invalidURL)
             return
         }
@@ -54,12 +54,12 @@ class NetworkManager {
     }
 
     func getAllCountries(completed: @escaping ([CountryShort]?, CFError?) -> Void) {
+        let endpoint = "https://restcountries.com/v3.1/"
         let endpointAllCountries = "\(endpoint)all?fields=flags,name"
         guard let url = URL(string: endpointAllCountries) else {
             completed(nil, .invalidURL)
             return
         }
-
         let task = URLSession.shared.dataTask(with: url) {[weak self] data, response, error in
             guard self != nil else {return}
             if error != nil {
@@ -76,7 +76,7 @@ class NetworkManager {
             }
 
             do {
-                let decoder = JSONDecoder()
+                    let decoder = JSONDecoder()
                 let allCountries = try decoder.decode([CountryShort].self, from: data)
                 completed(allCountries, nil)
             } catch {
@@ -87,8 +87,12 @@ class NetworkManager {
         task.resume()
     }
 
-    func downlodImage(imageURL: String, completed: @escaping (UIImage?, CFError?) -> Void) {
+    func downlodImage(imageURL: String, completed: @escaping (NSData?, CFError?) -> Void) {
         if let imageData = imageCache.object(forKey: imageURL as NSString) {
+            completed(imageData, nil)
+            return
+        }
+        if let imageData = flagsCache.object(forKey: imageURL as NSString) {
             completed(imageData, nil)
             return
         }
@@ -114,10 +118,9 @@ class NetworkManager {
                 return
             }
             do {
-                let data = try Data(contentsOf: localUrl)
-                let image = UIImage(data: data)
-                imageCache.setObject(image!, forKey: imageURL as NSString)
-                completed(image, nil)
+                let data = try NSData(contentsOf: localUrl)
+                imageCache.setObject(data!, forKey: imageURL as NSString)
+                completed(data, nil)
             } catch {
                 print(error.localizedDescription)
                 completed(nil, .invalidData)
@@ -127,21 +130,6 @@ class NetworkManager {
         task.resume()
     }
 
-    func getRegularUnsplashImages(urls: [UnsplashURLs], completed: @escaping ([UIImageView]?, CFError?) -> Void) {
-        var imageViews: [UIImageView] = []
-        for index in 0..<urls.count {
-            let imageView = UIImageView()
-            guard let url = URL(string: urls[index].regular) else {continue}
-            imageView.load(url: url)
-            imageViews.append(imageView)
-        }
-        if imageViews.isEmpty {
-            completed(nil, .invalidData)
-        } else {
-            completed(imageViews, nil)
-        }
-    }
-
     func searchImagesQuery(query: String, page: Int, completed: @escaping ([UnsplashURLs]?, CFError?) -> Void) {
         guard let clientKey = Bundle.main.object(forInfoDictionaryKey: "UnsplashKey") as? String else {
             completed(nil, .invalidClientKey)
@@ -149,7 +137,8 @@ class NetworkManager {
         }
         let endpoint = "https://api.unsplash.com/search/photos"
         let orderBy = "order_by=popular&orientation=portrait"
-        let stringUrl = "\(endpoint)?query=\(query)&client_id=\(clientKey)&page=\(page)&\(orderBy)"
+        guard let stringUrl = "\(endpoint)?query=\(query)&client_id=\(clientKey)&page=\(page)&\(orderBy)"
+            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {return}
         guard let url = URL(string: stringUrl) else {
             completed(nil, .invalidURL)
             return
@@ -185,7 +174,7 @@ class NetworkManager {
     func getCountryDescription(country: String, completed: @escaping (Result<QueryResponse, CFError>) -> Void) {
         let endpoint = "https://en.wikipedia.org/w/api.php?"
         let format = "format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&"
-        let stringURL = "\(endpoint)\(format)titles=\(country)"
+        guard let stringURL = "\(endpoint)\(format)titles=\(country)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {return}
         guard let url = URL(string: stringURL) else {
             completed(.failure(.invalidURL))
             return
@@ -215,14 +204,4 @@ class NetworkManager {
 
     }
 
-    func getCachedImage(imageURL: String) -> UIImage? {
-        if let imageData = imageCache.object(forKey: imageURL as NSString) {
-            return imageData
-        }
-        return nil
-    }
-
-    func setCachedImage(imageURL: String, image: UIImage) {
-        imageCache.setObject(image, forKey: imageURL as NSString)
-    }
 }

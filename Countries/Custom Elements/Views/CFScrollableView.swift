@@ -65,7 +65,6 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
     func getPhotosLinks() {
         DispatchQueue.global().async {[weak self] in
             guard let self = self else {return}
-
             NetworkManager.shared.searchImagesQuery(query: countryName, page: page) {response, _ in
                 guard let urls = response else {return}
                 self.unsplashLinks.append(contentsOf: urls)
@@ -81,12 +80,12 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
         scrollView.subviews.forEach { $0.removeFromSuperview() }
         for index in 0..<unsplashLinks.count {
             DispatchQueue.global(qos: .userInitiated).async {
-                NetworkManager.shared.downlodImage(imageURL: self.unsplashLinks[index].regular) { image, _ in
+                NetworkManager.shared.downlodImage(imageURL: self.unsplashLinks[index].regular) { data, _ in
                     let frame = CGRect(x: self.getXposition(index), y: 0,
                                        width: Constants.widthScrollViewItem, height: Constants.heightScrollViewItem)
                     DispatchQueue.main.async {
                         let subView = UIImageView(frame: frame)
-                        subView.image = image
+                        subView.image = UIImage(data: data! as Data)
                         subView.contentMode = .scaleAspectFill
                         subView.layer.cornerRadius = 15
                         subView.clipsToBounds = true
@@ -105,7 +104,9 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
         if scrollView.contentOffset.x >= (scrollView.contentSize.width - scrollView.frame.width) && !scrollLock {
             getPhotosLinks()
             page += 1
-            scrollLock = true
+            if page > 2 {
+                scrollLock = true
+            }
         }
     }
 }

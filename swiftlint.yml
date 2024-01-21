@@ -13,7 +13,6 @@ disabled_rules:
   - anonymous_argument_in_multiline_closure
   - anyobject_protocol
   - closure_body_length
-  - line_length
   - conditional_returns_on_newline
   - convenience_type
   - discouraged_optional_collection

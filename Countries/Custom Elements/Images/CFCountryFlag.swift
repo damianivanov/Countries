@@ -9,8 +9,6 @@ import UIKit
 
 class CFCountryFlag: UIImageView {
 
-    var cache = NetworkManager.shared.cache
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -30,7 +28,7 @@ class CFCountryFlag: UIImageView {
             guard let self = self else {return}
             if let data = data {
                 DispatchQueue.main.async {
-                    self.image = data
+                    self.image = UIImage(data: data as Data)
                 }
             }
         }

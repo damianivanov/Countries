@@ -125,7 +125,7 @@ struct Constants {
 
 struct Messages {
     static let somethingWentWrong = "Something Went Wrong."
-    static let emptyFavorites = "You don't have any favorites. Go add some 🙂."
+    static let emptyFavorites = "You don't have any favorites. Go add some."
     static let okMessage = "Ok"
     static let emptyCountry = "Empty Country"
     static let emptyCountrySearch = "You have to enter a country name."

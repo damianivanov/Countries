@@ -109,7 +109,7 @@ class AllCountriesVC: UIViewController {
         guard let countryName = notification.userInfo?.first?.value as? String else {return}
         if recentlyFavorited.contains(countryName) {
             recentlyFavorited.remove(countryName)
-            Utils.shared.updateFavoriteBadge(tabBarController?.tabBar, .add)
+            Utils.shared.updateFavoriteBadge(tabBarController?.tabBar, .remove)
         }
     }
 }
