@@ -38,7 +38,6 @@ class CFHeaderInfo: UIViewController {
         addSubViews()
         layoutUI()
         configureUI()
-
     }
 
     init(country: Country) {
@@ -146,6 +145,8 @@ class CFHeaderInfo: UIViewController {
                 guard let self = self else {return}
                 guard error != nil else {
                     self.favoriteIconImageView.image = UIImage(systemName: favoriteIconString)
+                    NotificationCenter.default.post(name: Notification.Name("removeBadge"),
+                                                    object: nil, userInfo: ["countryName": country.name.common])
                     return
                 }
             }
@@ -154,6 +155,8 @@ class CFHeaderInfo: UIViewController {
                 guard let self = self else {return}
                 guard error != nil else {
                     self.favoriteIconImageView.image = UIImage(systemName: favoriteFillIconString)
+                    NotificationCenter.default.post(name: Notification.Name("addBadge"),
+                                                    object: nil, userInfo: ["countryName": country.name.common])
                     return
                 }
             }

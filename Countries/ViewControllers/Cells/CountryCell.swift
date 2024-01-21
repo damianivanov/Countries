@@ -22,21 +22,21 @@ class CountryCell: UITableViewCell {
     }
 
     func configureUI() {
-        contentView.backgroundColor = .systemBackground
-        contentView.addSubviews(countryNameTitle, flagImage)
+        backgroundColor = .systemBackground
+        addSubviews(countryNameTitle, flagImage)
     }
 
     func configureConstraints() {
         NSLayoutConstraint.activate([
-            flagImage.topAnchor.constraint(equalTo: contentView.topAnchor),
-            flagImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
+            flagImage.topAnchor.constraint(equalTo: topAnchor),
+            flagImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
             flagImage.widthAnchor.constraint(equalToConstant: 50),
-            flagImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            flagImage.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-            countryNameTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            countryNameTitle.centerYAnchor.constraint(equalTo: centerYAnchor),
             countryNameTitle.leadingAnchor.constraint(equalTo: flagImage.trailingAnchor, constant: Constants.padding),
             countryNameTitle.heightAnchor.constraint(equalToConstant: 30),
-            countryNameTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
+            countryNameTitle.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5)
         ])
     }
 

@@ -30,19 +30,29 @@ class Utils {
         return flowLayout
     }
 
-    func addBadgeToFavorite(_ tabBar: UITabBar?) {
+    func updateFavoriteBadge(_ tabBar: UITabBar?, _ action: FavoritesManager.ActionType) {
         guard let tabBar = tabBar else {return}
         guard let tabItem = tabBar.items?[1] else {return}
         var number = 0
         if let value = tabItem.badgeValue {
             number = Int(value) ?? 0
         }
-        number+=1
-        var numberString = String(number)
+
+        if action == .remove {
+            number -= 1
+        } else {
+            number += 1
+        }
+        if number <= 0 {
+            tabItem.badgeValue = nil
+            return
+        }
+        let numberString = String(number)
         tabItem.badgeColor = .red
         tabItem.badgeValue = numberString
         tabItem.setBadgeTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
     }
+
     func removeBadgeFavorite(_ tabBar: UITabBar?) {
         guard let tabBar = tabBar else {return}
         guard let tabItem = tabBar.items?[1] else {return}

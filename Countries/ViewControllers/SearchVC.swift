@@ -15,7 +15,7 @@ class SearchVC: UIViewController {
     let searchCountryButton = CFButton(backgroundColor: .systemRed, title: "Search Country")
     let allCountriesButton = CFButton(backgroundColor: .systemGreen, title: "All Countries")
     var isCountryEntered: Bool { return !countryTextField.text!.isEmpty }
-    let buttonPadding: CGFloat = 60
+    let buttonPadding: CGFloat = 40
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +62,7 @@ class SearchVC: UIViewController {
             logoImageView.widthAnchor.constraint(equalToConstant: screenWidth),
             logoImageView.heightAnchor.constraint(equalToConstant: screenWidth*0.9),
 
-            allCountriesButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.padding*2),
+            allCountriesButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.padding),
             allCountriesButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: buttonPadding),
             allCountriesButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -buttonPadding),
             allCountriesButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),

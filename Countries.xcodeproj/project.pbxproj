@@ -33,7 +33,6 @@
 		2D45D3032B56F43900CC1C17 /* UILabelView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D45D3022B56F43900CC1C17 /* UILabelView+Extension.swift */; };
 		2D45D3052B5825EE00CC1C17 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D45D3042B5825EE00CC1C17 /* UIView+Extension.swift */; };
 		2D45D3092B591E9400CC1C17 /* CFEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D45D3082B591E9400CC1C17 /* CFEmptyView.swift */; };
-		2D45D30C2B5977DC00CC1C17 /* Flags.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2D45D30A2B5977DB00CC1C17 /* Flags.xcdatamodeld */; };
 		2D54B7CF2B4D79FD0084754B /* Secrets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2D54B7CE2B4D79FD0084754B /* Secrets.plist */; };
 		2D54B7D12B4D8EBC0084754B /* CFScrollableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D54B7D02B4D8EBC0084754B /* CFScrollableView.swift */; };
 		2D7E6E0F2B4B06D600A7BFE8 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D7E6E0E2B4B06D600A7BFE8 /* Country.swift */; };
@@ -93,7 +92,6 @@
 		2D45D3022B56F43900CC1C17 /* UILabelView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabelView+Extension.swift"; sourceTree = "<group>"; };
 		2D45D3042B5825EE00CC1C17 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		2D45D3082B591E9400CC1C17 /* CFEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFEmptyView.swift; sourceTree = "<group>"; };
-		2D45D30B2B5977DB00CC1C17 /* Flags.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Flags.xcdatamodel; sourceTree = "<group>"; };
 		2D54B7CE2B4D79FD0084754B /* Secrets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Secrets.plist; sourceTree = "<group>"; };
 		2D54B7D02B4D8EBC0084754B /* CFScrollableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CFScrollableView.swift; sourceTree = "<group>"; };
 		2D7E6E0E2B4B06D600A7BFE8 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
@@ -159,7 +157,6 @@
 				2D3342EF2B44CE4D0044C6C0 /* ViewController.swift */,
 				2D3342F42B44CE4E0044C6C0 /* Assets.xcassets */,
 				2D3342F92B44CE4E0044C6C0 /* Info.plist */,
-				2D45D30A2B5977DB00CC1C17 /* Flags.xcdatamodeld */,
 				2D33432D2B4712180044C6C0 /* Custom Elements */,
 				2D3343302B472B1C0044C6C0 /* ViewControllers */,
 				2D3343312B472B5D0044C6C0 /* Extensions */,
@@ -436,7 +433,6 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/swiftLint",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -465,7 +461,6 @@
 				2D3343402B48B66A0044C6C0 /* CFError.swift in Sources */,
 				2DD053392B54CE700084AD90 /* FavoritesViewCell.swift in Sources */,
 				2D33431C2B44D28A0044C6C0 /* SearchVC.swift in Sources */,
-				2D45D30C2B5977DC00CC1C17 /* Flags.xcdatamodeld in Sources */,
 				2D3342F02B44CE4D0044C6C0 /* ViewController.swift in Sources */,
 				2D3342EC2B44CE4D0044C6C0 /* AppDelegate.swift in Sources */,
 				2D33433E2B482B810044C6C0 /* NetworkManager.swift in Sources */,
@@ -813,19 +808,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		2D45D30A2B5977DB00CC1C17 /* Flags.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				2D45D30B2B5977DB00CC1C17 /* Flags.xcdatamodel */,
-			);
-			currentVersion = 2D45D30B2B5977DB00CC1C17 /* Flags.xcdatamodel */;
-			path = Flags.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 2D3342E02B44CE4D0044C6C0 /* Project object */;
 }

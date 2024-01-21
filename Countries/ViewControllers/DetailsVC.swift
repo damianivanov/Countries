@@ -17,7 +17,7 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
     var photosView = UIView()
     var countryInfo = UITextView()
     var mapsButtons = UIView()
-    var countryInfoSentences = 3
+    var countryInfoSentences = 4
 
     override func viewDidLoad() {
         super.viewDidLoad()

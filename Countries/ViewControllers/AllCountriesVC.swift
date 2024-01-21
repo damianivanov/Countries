@@ -14,7 +14,7 @@ class AllCountriesVC: UIViewController {
     var filteredCountries: [CountryShort] = []
     var dataSource: UITableViewDiffableDataSource<Section, CountryShort>!
     let searchController = UISearchController()
-
+    var recentlyFavorited = Set<String>()
     var isFiltered: Bool {
         return !searchController.searchBar.text!.isEmpty
     }
@@ -37,8 +37,15 @@ class AllCountriesVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        addObservers()
+        recentlyFavorited = Set<String>()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("addBadge"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("removeBadge"), object: nil)
+        recentlyFavorited = Set<String>()
+    }
     func configureTableView() {
         view.addSubview(tableView)
         tableView.delegate = self
@@ -82,6 +89,29 @@ class AllCountriesVC: UIViewController {
             }
         }
     }
+
+    private func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(addBadge),
+                                               name: Notification.Name("addBadge"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(removeBadge),
+                                               name: Notification.Name("removeBadge"), object: nil)
+    }
+
+    @objc private func addBadge(notification: NSNotification) {
+        guard let countryName = notification.userInfo?.first?.value as? String else {return}
+        if !recentlyFavorited.contains(countryName) {
+            recentlyFavorited.insert(countryName)
+            Utils.shared.updateFavoriteBadge(tabBarController?.tabBar, .add)
+        }
+    }
+
+    @objc private func removeBadge(notification: NSNotification) {
+        guard let countryName = notification.userInfo?.first?.value as? String else {return}
+        if recentlyFavorited.contains(countryName) {
+            recentlyFavorited.remove(countryName)
+            Utils.shared.updateFavoriteBadge(tabBarController?.tabBar, .add)
+        }
+    }
 }
 
 extension AllCountriesVC: UITableViewDelegate {
@@ -103,7 +133,7 @@ extension AllCountriesVC: UITableViewDelegate {
                     completionHandler(false)
                     return
                 default:
-                    Utils.shared.addBadgeToFavorite(self.tabBarController?.tabBar)
+                    Utils.shared.updateFavoriteBadge(self.tabBarController?.tabBar, .add)
                     completionHandler(true)
                 }
             }
