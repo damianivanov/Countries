@@ -124,7 +124,7 @@ extension AllCountriesVC: UITableViewDelegate {
                    leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let activeArray = isFiltered ? filteredCountries : allCountries
         let country = activeArray[indexPath.row]
-
+        if self.recentlyFavorited.contains(country.name.common) {return nil}
         let favorite = UIContextualAction(style: .normal, title: "Add To Favorites") {  (_, _, completionHandler) in
             FavoritesManager.update(country: country, actionType: .add) { [weak self] result in
                 guard let self = self else {return}
@@ -133,6 +133,7 @@ extension AllCountriesVC: UITableViewDelegate {
                     completionHandler(false)
                     return
                 default:
+                    self.recentlyFavorited.insert(country.name.common)
                     Utils.shared.updateFavoriteBadge(self.tabBarController?.tabBar, .add)
                     completionHandler(true)
                 }

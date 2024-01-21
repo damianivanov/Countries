@@ -26,24 +26,19 @@ class CFEmptyView: UIView {
 
     private func configure() {
         addSubview(message)
-        /*tamicFalse()*/
         configureUI()
     }
 
     private func configureUI() {
         NSLayoutConstraint.activate([
-
             message.centerYAnchor.constraint(equalTo: centerYAnchor),
             message.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 40),
             message.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -40),
             message.heightAnchor.constraint(equalToConstant: 200)
-
         ])
-
-        message.numberOfLines = 3
+        message.numberOfLines = 2
         message.text = messageString
         message.textColor = .secondaryLabel
-
+        message.lineBreakMode = .byTruncatingMiddle
     }
-
 }

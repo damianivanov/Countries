@@ -29,12 +29,24 @@ class SearchVC: UIViewController {
         configureSearchButton()
         createDismissKeyboardTapGesture()
 
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), 
+                                               name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
 
+    }
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
+        self.view.frame.origin.y = 0 - keyboardSize.height
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+      self.view.frame.origin.y = 0
     }
 
     func configureUI() {
@@ -57,17 +69,17 @@ class SearchVC: UIViewController {
     func configureConstraints() {
 
         NSLayoutConstraint.activate([
-            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.widthAnchor.constraint(equalToConstant: screenWidth),
             logoImageView.heightAnchor.constraint(equalToConstant: screenWidth*0.9),
 
-            allCountriesButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.padding),
+            allCountriesButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.buttonHeight),
             allCountriesButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: buttonPadding),
             allCountriesButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -buttonPadding),
             allCountriesButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
 
-            countryTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 80),
+            countryTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: Constants.padding),
             countryTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: buttonPadding),
             countryTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -buttonPadding),
             countryTextField.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
@@ -110,6 +122,10 @@ class SearchVC: UIViewController {
         let nav = Utils.shared.getSheetDetailsVC(countryName: countryTextField.text!)
         present(nav, animated: true, completion: nil)
         countryTextField.text = ""
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
 }

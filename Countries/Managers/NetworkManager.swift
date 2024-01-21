@@ -174,7 +174,8 @@ class NetworkManager {
     func getCountryDescription(country: String, completed: @escaping (Result<QueryResponse, CFError>) -> Void) {
         let endpoint = "https://en.wikipedia.org/w/api.php?"
         let format = "format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&"
-        guard let stringURL = "\(endpoint)\(format)titles=\(country)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {return}
+        guard let stringURL = "\(endpoint)\(format)titles=\(country)"
+            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {return}
         guard let url = URL(string: stringURL) else {
             completed(.failure(.invalidURL))
             return
