@@ -120,6 +120,7 @@ class SearchVC: UIViewController {
         let detailsVC = DetailsVC()
         detailsVC.countryName = countryTextField.text
         let nav = Utils.shared.getSheetDetailsVC(countryName: countryTextField.text!)
+        countryTextField.resignFirstResponder()
         present(nav, animated: true, completion: nil)
         countryTextField.text = ""
     }

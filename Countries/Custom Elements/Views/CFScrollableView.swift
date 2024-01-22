@@ -8,13 +8,15 @@
 import UIKit
 
 class CFScrollableView: UIViewController, UIScrollViewDelegate {
-
     var scrollView = UIScrollView()
     var countryName = ""
     var unsplashLinks: [UnsplashURLs] = []
-    var scrollViewImages: [UIImageView] = []
     var scrollLock = false
     var page = 1
+    let maxPage = 2
+    var itemsCount: CGFloat {
+        return CGFloat(unsplashLinks.count + ((page - 1) * 10))
+    }
     var imagesCount: CGFloat {
         return CGFloat(unsplashLinks.count)
     }
@@ -37,11 +39,10 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
         self.scrollView.delegate = self
         configureScrollView()
         getPhotosLinks()
-        // scrollView.reloadInputViews()
     }
 
     func updateContentSize() {
-        let contentWidth = Constants.widthScrollViewItem * imagesCount + Constants.padding * (imagesCount+1)
+        let contentWidth = Constants.widthScrollViewItem * itemsCount + Constants.padding * (itemsCount+1)
         DispatchQueue.main.async {
             self.scrollView.contentSize = CGSize(width: contentWidth, height: Constants.heightScrollViewItem)
         }
@@ -53,7 +54,7 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
         updateContentSize()
         scrollView.alwaysBounceHorizontal = true
         scrollView.alwaysBounceVertical = false
-
+        scrollView.showsHorizontalScrollIndicator = false
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -67,7 +68,7 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
             guard let self = self else {return}
             NetworkManager.shared.searchImagesQuery(query: countryName, page: page) {response, _ in
                 guard let urls = response else {return}
-                self.unsplashLinks.append(contentsOf: urls)
+                self.unsplashLinks = urls
                 DispatchQueue.main.async {
                     self.populateScrollView()
                     self.updateContentSize()
@@ -77,11 +78,10 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
     }
 
     func populateScrollView() {
-        scrollView.subviews.forEach { $0.removeFromSuperview() }
         for index in 0..<unsplashLinks.count {
             DispatchQueue.global(qos: .userInitiated).async {
                 NetworkManager.shared.downlodImage(imageURL: self.unsplashLinks[index].regular) { data, _ in
-                    let frame = CGRect(x: self.getXposition(index), y: 0,
+                    let frame = CGRect(x: self.getXposition(index,self.page), y: 0,
                                        width: Constants.widthScrollViewItem, height: Constants.heightScrollViewItem)
                     DispatchQueue.main.async {
                         let subView = UIImageView(frame: frame)
@@ -95,16 +95,17 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
             }
         }
     }
-
-    func getXposition(_ index: Int) -> CGFloat {
-        return CGFloat(Constants.widthScrollViewItem * CGFloat(index)) + CGFloat(index+1) * Constants.padding
+    
+    func getXposition(_ index: Int,_ page: Int) -> CGFloat {
+        let itemIndex:CGFloat = CGFloat(index + ((page-1)*10))
+        return CGFloat(Constants.widthScrollViewItem * itemIndex + (itemIndex+1) * Constants.padding)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.x >= (scrollView.contentSize.width - scrollView.frame.width) && !scrollLock {
             getPhotosLinks()
             page += 1
-            if page > 2 {
+            if page >= maxPage {
                 scrollLock = true
             }
         }
