@@ -48,7 +48,7 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
         }
     }
 
-    func configureScrollView() {
+    private func configureScrollView() {
         view.addSubview(scrollView)
         view.tamicFalse()
         updateContentSize()
@@ -63,7 +63,7 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
         ])
     }
 
-    func getPhotosLinks() {
+    private func getPhotosLinks() {
         DispatchQueue.global().async {[weak self] in
             guard let self = self else {return}
             NetworkManager.shared.searchImagesQuery(query: countryName, page: page) {response, _ in

@@ -56,7 +56,7 @@ class FavoritesListVC: UIViewController {
     }
 
     @objc private func updatedFavorites(notification: NSNotification) {
-            self.dismiss(animated: true)
+        self.dismiss(animated: true)
         loadFavorites()
     }
 
@@ -88,10 +88,10 @@ extension FavoritesListVC: UICollectionViewDelegate, UICollectionViewDataSource 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return favorites.count
     }
- func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesViewCell.cellIdentifier, for: indexPath)
-     as? FavoritesViewCell
-        cell?.set(country: favorites[indexPath.row])
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoritesViewCell.cellIdentifier, for: indexPath)
+        as? FavoritesViewCell
+        cell?.set(favorites[indexPath.row])
         return cell ?? UICollectionViewCell()
     }
 

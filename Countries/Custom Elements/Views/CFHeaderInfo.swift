@@ -105,7 +105,7 @@ class CFHeaderInfo: UIViewController {
 
     }
 
-    func configureUI() {
+    private func configureUI() {
 
         flagImageView.downloadFlag(urlString: country.flags.png)
         countryName.text = country.name.common

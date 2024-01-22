@@ -46,7 +46,7 @@ class AllCountriesVC: UIViewController {
         NotificationCenter.default.removeObserver(self, name: Notification.Name("removeBadge"), object: nil)
         recentlyFavorited = Set<String>()
     }
-    func configureTableView() {
+    private func configureTableView() {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +62,7 @@ class AllCountriesVC: UIViewController {
 
     }
 
-    func configureSearchController() {
+    private func configureSearchController() {
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         searchController.searchBar.placeholder = "Search for a country"
@@ -72,7 +72,7 @@ class AllCountriesVC: UIViewController {
 
     }
 
-    func fetchData() {
+    private func fetchData() {
         self.showLoadingView()
         NetworkManager.shared.getAllCountries { [weak self] (countryResponse, error) in
             guard let self = self else {return}
@@ -124,8 +124,11 @@ extension AllCountriesVC: UITableViewDelegate {
                    leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let activeArray = isFiltered ? filteredCountries : allCountries
         let country = activeArray[indexPath.row]
-        if self.recentlyFavorited.contains(country.name.common) {return nil}
         let favorite = UIContextualAction(style: .normal, title: "Add To Favorites") {  (_, _, completionHandler) in
+            if self.recentlyFavorited.contains(country.name.common) {
+                completionHandler(false)
+                return
+            }
             FavoritesManager.update(country: country, actionType: .add) { [weak self] result in
                 guard let self = self else {return}
                 switch result {
@@ -167,7 +170,7 @@ extension AllCountriesVC: UITableViewDelegate {
         })
     }
 
-    func updateData(on countries: [CountryShort]) {
+    private func updateData(on countries: [CountryShort]) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, CountryShort>()
         snapshot.appendSections([.main])
         snapshot.appendItems(countries)

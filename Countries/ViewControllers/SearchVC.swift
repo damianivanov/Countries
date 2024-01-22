@@ -8,10 +8,10 @@
 import UIKit
 
 class SearchVC: UIViewController {
-
     var screenWidth = UIScreen.main.bounds.width
     let logoImageView = UIImageView()
     let countryTextField = CFTextField()
+    let buttonsView = UIView()
     let searchCountryButton = CFButton(backgroundColor: .systemRed, title: "Search Country")
     let allCountriesButton = CFButton(backgroundColor: .systemGreen, title: "All Countries")
     var isCountryEntered: Bool { return !countryTextField.text!.isEmpty }
@@ -22,16 +22,13 @@ class SearchVC: UIViewController {
         view.backgroundColor = .systemBackground
         configureUI()
         configureConstraints()
-
-        configureLogoImageView()
-        configureTextField()
-        configureAllCountriesButton()
-        configureSearchButton()
+        configureButtonsView()
+        configureSubViews()
         createDismissKeyboardTapGesture()
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
                                                name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), 
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
                                                name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
@@ -40,69 +37,61 @@ class SearchVC: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: true)
 
     }
-    @objc func keyboardWillShow(notification: NSNotification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
-        self.view.frame.origin.y = 0 - keyboardSize.height
+
+    private func configureButtonsView(){
+        buttonsView.addSubviews(allCountriesButton,searchCountryButton)
+        NSLayoutConstraint.activate([
+            allCountriesButton.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: -Constants.padding),
+            allCountriesButton.leadingAnchor.constraint(equalTo: buttonsView.leadingAnchor, constant: buttonPadding),
+            allCountriesButton.trailingAnchor.constraint(equalTo: buttonsView.trailingAnchor, constant: -buttonPadding),
+            allCountriesButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
+
+            searchCountryButton.bottomAnchor.constraint(equalTo: allCountriesButton.topAnchor,
+                                                        constant: -Constants.padding),
+            searchCountryButton.leadingAnchor.constraint(equalTo: buttonsView.leadingAnchor, constant: buttonPadding),
+            searchCountryButton.trailingAnchor.constraint(equalTo: buttonsView.trailingAnchor, constant: -buttonPadding),
+            searchCountryButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight)
+
+
+        ])
     }
 
-    @objc func keyboardWillHide(notification: NSNotification) {
-      self.view.frame.origin.y = 0
-    }
-
-    func configureUI() {
-        view.addSubviews(logoImageView, countryTextField, allCountriesButton, searchCountryButton)
+    private func configureUI() {
+        view.addSubviews(logoImageView, countryTextField,buttonsView ,allCountriesButton, searchCountryButton)
         view.tamicFalse()
     }
 
-    func createDismissKeyboardTapGesture() {
+    private func createDismissKeyboardTapGesture() {
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
         view.addGestureRecognizer(tap)
-
     }
 
-    func configureLogoImageView() {
+    private func configureSubViews() {
         logoImageView.image = UIImage(named: Constants.logoImagePath)!
-        logoImageView.contentMode = .scaleToFill
-
+        countryTextField.delegate = self
+        searchCountryButton.addTarget(self, action: #selector(pushDetailsVC), for: .touchUpInside)
+        allCountriesButton.addTarget(self, action: #selector(pushAllCountriesVC), for: .touchUpInside)
     }
 
-    func configureConstraints() {
-
+    private func configureConstraints() {
+        let buttonsViewHeight = CGFloat(2*Constants.buttonHeight + 3*Constants.padding)
         NSLayoutConstraint.activate([
             logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoImageView.widthAnchor.constraint(equalToConstant: screenWidth),
             logoImageView.heightAnchor.constraint(equalToConstant: screenWidth*0.9),
 
-            allCountriesButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.buttonHeight),
-            allCountriesButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: buttonPadding),
-            allCountriesButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -buttonPadding),
-            allCountriesButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
-
             countryTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: Constants.padding),
             countryTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: buttonPadding),
             countryTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -buttonPadding),
             countryTextField.heightAnchor.constraint(equalToConstant: Constants.buttonHeight),
 
-            searchCountryButton.bottomAnchor.constraint(equalTo: allCountriesButton.topAnchor,
-                                                        constant: -Constants.padding),
-            searchCountryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: buttonPadding),
-            searchCountryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -buttonPadding),
-            searchCountryButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight)
+            buttonsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.padding),
+            buttonsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            buttonsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            buttonsView.heightAnchor.constraint(equalToConstant: buttonsViewHeight)
+
         ])
-    }
-
-    func configureTextField() {
-        countryTextField.delegate = self
-    }
-
-    func configureAllCountriesButton() {
-        allCountriesButton.addTarget(self, action: #selector(pushAllCountriesVC), for: .touchUpInside)
-    }
-
-    func configureSearchButton() {
-        searchCountryButton.addTarget(self, action: #selector(pushDetailsVC), for: .touchUpInside)
-
     }
 
     @objc func pushAllCountriesVC() {
@@ -110,13 +99,12 @@ class SearchVC: UIViewController {
         navigationController?.pushViewController(allCountriesVC, animated: true)
     }
 
-    @objc func pushDetailsVC() {
+    @objc private func pushDetailsVC() {
         guard isCountryEntered else {
             presentCFAlertOnMainThread(title: Messages.emptyCountry,
                                        bodyMessage: Messages.emptyCountrySearch, buttonText: Messages.okMessage)
             return
         }
-
         let detailsVC = DetailsVC()
         detailsVC.countryName = countryTextField.text
         let nav = Utils.shared.getSheetDetailsVC(countryName: countryTextField.text!)
@@ -124,7 +112,23 @@ class SearchVC: UIViewController {
         present(nav, animated: true, completion: nil)
         countryTextField.text = ""
     }
-    
+
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
+
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self = self else { return }
+            self.view.frame.origin.y = 0 - keyboardSize.height + (tabBarController?.tabBar.frame.height ?? 0)
+        }
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self = self else { return }
+            self.view.frame.origin.y = 0
+        }
+    }
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }

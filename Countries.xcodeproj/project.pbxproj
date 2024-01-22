@@ -10,7 +10,6 @@
 		2D0B8E9C2B4D77CF0013E8CD /* UnsplashImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D0B8E9B2B4D77CF0013E8CD /* UnsplashImage.swift */; };
 		2D3342EC2B44CE4D0044C6C0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3342EB2B44CE4D0044C6C0 /* AppDelegate.swift */; };
 		2D3342EE2B44CE4D0044C6C0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3342ED2B44CE4D0044C6C0 /* SceneDelegate.swift */; };
-		2D3342F02B44CE4D0044C6C0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3342EF2B44CE4D0044C6C0 /* ViewController.swift */; };
 		2D3342F52B44CE4E0044C6C0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D3342F42B44CE4E0044C6C0 /* Assets.xcassets */; };
 		2D3343032B44CE4F0044C6C0 /* CountriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3343022B44CE4F0044C6C0 /* CountriesTests.swift */; };
 		2D33430D2B44CE4F0044C6C0 /* CountriesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D33430C2B44CE4F0044C6C0 /* CountriesUITests.swift */; };
@@ -66,7 +65,6 @@
 		2D3342E82B44CE4D0044C6C0 /* Countries.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countries.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D3342EB2B44CE4D0044C6C0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2D3342ED2B44CE4D0044C6C0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		2D3342EF2B44CE4D0044C6C0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2D3342F42B44CE4E0044C6C0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2D3342F92B44CE4E0044C6C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2D3342FE2B44CE4E0044C6C0 /* CountriesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountriesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,7 +152,6 @@
 				2D3343322B4749520044C6C0 /* Models */,
 				2D3342EB2B44CE4D0044C6C0 /* AppDelegate.swift */,
 				2D3342ED2B44CE4D0044C6C0 /* SceneDelegate.swift */,
-				2D3342EF2B44CE4D0044C6C0 /* ViewController.swift */,
 				2D3342F42B44CE4E0044C6C0 /* Assets.xcassets */,
 				2D3342F92B44CE4E0044C6C0 /* Info.plist */,
 				2D33432D2B4712180044C6C0 /* Custom Elements */,
@@ -462,7 +459,6 @@
 				2D3343402B48B66A0044C6C0 /* CFError.swift in Sources */,
 				2DD053392B54CE700084AD90 /* FavoritesViewCell.swift in Sources */,
 				2D33431C2B44D28A0044C6C0 /* SearchVC.swift in Sources */,
-				2D3342F02B44CE4D0044C6C0 /* ViewController.swift in Sources */,
 				2D3342EC2B44CE4D0044C6C0 /* AppDelegate.swift in Sources */,
 				2D33433E2B482B810044C6C0 /* NetworkManager.swift in Sources */,
 				2D54B7D12B4D8EBC0084754B /* CFScrollableView.swift in Sources */,

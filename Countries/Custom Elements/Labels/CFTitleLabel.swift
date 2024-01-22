@@ -32,7 +32,7 @@ class CFTitleLabel: UILabel {
         configure()
     }
 
-    func configure() {
+    private func configure() {
         translatesAutoresizingMaskIntoConstraints = false
         textColor = .label
         adjustsFontSizeToFitWidth = true

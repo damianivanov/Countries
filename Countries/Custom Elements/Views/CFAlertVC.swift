@@ -42,11 +42,12 @@ class CFAlertVC: UIViewController {
         configureConstraints()
 
     }
-    func addSubviews() {
+
+    private func addSubviews() {
         view.addSubviews(containerView, titleLabel, button, bodyLabel)
     }
 
-    func configureContainerView() {
+    private func configureContainerView() {
         containerView.backgroundColor = .systemBackground
         containerView.layer.cornerRadius = 16
         containerView.layer.borderWidth = 2
@@ -54,7 +55,7 @@ class CFAlertVC: UIViewController {
         view.tamicFalse()
     }
 
-    func configureConstraints() {
+    private func configureConstraints() {
         NSLayoutConstraint.activate([
             containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             containerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -80,16 +81,16 @@ class CFAlertVC: UIViewController {
         ])
     }
 
-    func configureTitleLabel() {
+    private func configureTitleLabel() {
         titleLabel.text = alertTitle ?? Messages.somethingWentWrong
     }
 
-    func configureButton() {
+    private func configureButton() {
         button.setTitle(buttonTitle ?? Messages.okMessage, for: .normal)
         button.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
     }
 
-    func configureBodyLabel() {
+    private func configureBodyLabel() {
         bodyLabel.text = bodyMessage ?? Messages.somethingWentWrong
         bodyLabel.numberOfLines = 5
         bodyLabel.textAlignment = .center

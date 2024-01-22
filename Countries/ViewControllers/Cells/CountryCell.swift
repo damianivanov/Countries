@@ -14,19 +14,17 @@ class CountryCell: UITableViewCell {
     var countryNameTitle = CFTitleLabel(textAlignment: .left, fontSize: 20, weight: .bold)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-           super.init(style: style, reuseIdentifier: reuseIdentifier)
-
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureUI()
         configureConstraints()
-
     }
 
-    func configureUI() {
+    private func configureUI() {
         backgroundColor = .systemBackground
         addSubviews(countryNameTitle, flagImage)
     }
 
-    func configureConstraints() {
+    private func configureConstraints() {
         NSLayoutConstraint.activate([
             flagImage.topAnchor.constraint(equalTo: topAnchor),
             flagImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
