@@ -28,7 +28,6 @@ class FavoritesManager {
         clearRecent()
     }
 
-
     func updateRecent(country: String, action: ActionType) {
         switch action {
         case .add:
@@ -46,14 +45,14 @@ class FavoritesManager {
             let decoder = JSONDecoder()
             let favorites = try decoder.decode([CountryShort].self, from: favoritesData)
             return favorites
-        } catch{
+        } catch {
             throw CFError.unableToFavorite
         }
 
     }
 
     func update(country: CountryShort, action: ActionType) -> Bool {
-        do{
+        do {
             var favorites = try getFavorites()
             switch action {
             case .add:
@@ -66,7 +65,7 @@ class FavoritesManager {
             let result = setFavorites(favorites: favorites)
 //            updateRecent(country: country.name.common, action: action)
             return result == nil ? true : false
-        } catch{
+        } catch {
             return false
         }
     }
@@ -132,6 +131,5 @@ class FavoritesManager {
     //        }
         }
      */
-
 
 }

@@ -113,7 +113,7 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
                 add(childVC: CFMapsButtons(country: country), to: self.mapsButtons)
             } catch {
                 if let cfError = error as? CFError {
-                    presentCFAlertOnMainThread(title: Messages.somethingWentWrong, 
+                    presentCFAlertOnMainThread(title: Messages.somethingWentWrong,
                                                bodyMessage: cfError.rawValue, buttonText: Messages.okMessage)
                 } else {
                     print(error.localizedDescription)

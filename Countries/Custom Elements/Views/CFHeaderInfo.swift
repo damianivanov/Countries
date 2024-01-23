@@ -145,7 +145,7 @@ class CFHeaderInfo: UIViewController {
             if result {
                 self.favoriteIconImageView.image = UIImage(systemName: favoriteIconString)
                 NotificationCenter.default.post(name: Notification.Name("removeBadge"),
-                                                object: nil, userInfo: ["countryName":country.name.common])
+                                                object: nil, userInfo: ["countryName": country.name.common])
             }
         } else {
             let result = FavoritesManager.shared.update(country: favoriteCountry, action: .add)

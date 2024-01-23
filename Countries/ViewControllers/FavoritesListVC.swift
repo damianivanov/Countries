@@ -95,13 +95,13 @@ class FavoritesListVC: UIViewController {
             DispatchQueue.main.async {
                 self.emptyStateView(message: Messages.emptyFavorites, in: self.view)
             }
-        }else{
+        } else {
             clearEmptyState()
         }
         DispatchQueue.main.async { self.collectionView.reloadData()}
     }
 
-    deinit{
+    deinit {
         NotificationCenter.default.removeObserver(self)
     }
 }
