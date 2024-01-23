@@ -89,18 +89,6 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
         }
     }
 
-//        DispatchQueue.global().async {[weak self] in
-//            guard let self = self else {return}
-//            NetworkManager.shared.searchImagesQuery(query: countryName, page: page) {response, _ in
-//                guard let urls = response else {return}
-//                self.unsplashLinks = urls
-//                DispatchQueue.main.async {
-//                    self.populateScrollView()
-//                    self.updateContentSize()
-//                }
-//            }
-//        }
-
     @MainActor
     func populateScrollView() {
         for index in 0..<unsplashLinks.count {
@@ -118,19 +106,6 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
             }
         }
     }
-
-//                NetworkManager.shared.downlodImage(imageURL: self.unsplashLinks[index].regular) { data, _ in
-//                    let frame = CGRect(x: self.getXposition(index,self.page), y: 0,
-//                                       width: Constants.widthScrollViewItem, height: Constants.heightScrollViewItem)
-//                    DispatchQueue.main.async {
-//                        let subView = UIImageView(frame: frame)
-//                        subView.image = UIImage(data: data! as Data)
-//                        subView.contentMode = .scaleAspectFill
-//                        subView.layer.cornerRadius = 15
-//                        subView.clipsToBounds = true
-//                        self.scrollView.addSubview(subView)
-//                    }
-//                }
 
     func getXposition(_ index: Int, _ page: Int) -> CGFloat {
         let itemIndex: CGFloat = CGFloat(index + ((page-1)*10))

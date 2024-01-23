@@ -15,7 +15,6 @@ class AllCountriesVC: UIViewController {
     var filteredCountries: [CountryShort] = []
     var dataSource: UITableViewDiffableDataSource<Section, CountryShort>!
     let searchController = UISearchController()
-    var recentlyFavorited = Set<String>()
     var isFiltered: Bool {
         return !searchController.searchBar.text!.isEmpty
     }
@@ -37,16 +36,8 @@ class AllCountriesVC: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        addObservers()
-        recentlyFavorited = Set<String>()
-    }
+        navigationController?.setNavigationBarHidden(false, animated: true)    }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name("addBadge"), object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name("removeBadge"), object: nil)
-        recentlyFavorited = Set<String>()
-    }
     private func configureTableView() {
         view.addSubview(tableView)
         tableView.delegate = self
@@ -89,44 +80,6 @@ class AllCountriesVC: UIViewController {
         }
 
     }
-
-//        NetworkManager.shared.getAllCountries { [weak self] (countryResponse, error) in
-//            guard let self = self else {return}
-//            DispatchQueue.main.async {self.dismissLoadingView()}
-//            guard let countryResponse = countryResponse else {
-//                self.presentCFAlertOnMainThread(title: Messages.somethingWentWrong,
-//                                                bodyMessage: error?.rawValue ?? "", buttonText: Messages.okMessage)
-//                return
-//
-//            }
-//            self.allCountries = countryResponse.sorted(by: { $0.name.common < $1.name.common })
-//            DispatchQueue.main.async {
-//                self.updateData(on: self.allCountries)
-//            }
-//        }
-
-    private func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(addBadge),
-                                               name: Notification.Name("addBadge"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(removeBadge),
-                                               name: Notification.Name("removeBadge"), object: nil)
-    }
-
-    @objc private func addBadge(notification: NSNotification) {
-        guard let countryName = notification.userInfo?.first?.value as? String else {return}
-        if !recentlyFavorited.contains(countryName) {
-            recentlyFavorited.insert(countryName)
-            Utils.shared.updateFavoriteBadge(tabBarController?.tabBar, .add)
-        }
-    }
-
-    @objc private func removeBadge(notification: NSNotification) {
-        guard let countryName = notification.userInfo?.first?.value as? String else {return}
-        if recentlyFavorited.contains(countryName) {
-            recentlyFavorited.remove(countryName)
-            Utils.shared.updateFavoriteBadge(tabBarController?.tabBar, .remove)
-        }
-    }
 }
 
 extension AllCountriesVC: UITableViewDelegate {
@@ -140,22 +93,19 @@ extension AllCountriesVC: UITableViewDelegate {
         let activeArray = isFiltered ? filteredCountries : allCountries
         let country = activeArray[indexPath.row]
         let favorite = UIContextualAction(style: .normal, title: "Add To Favorites") {  (_, _, completionHandler) in
-            if self.recentlyFavorited.contains(country.name.common) {
+            if FavoritesManager.recentFavorites.contains(country.name.common) {
                 completionHandler(false)
                 return
             }
-            FavoritesManager.update(country: country, actionType: .add) { [weak self] result in
-                guard let self = self else {return}
-                switch result {
-                case .some:
-                    completionHandler(false)
-                    return
-                default:
-                    self.recentlyFavorited.insert(country.name.common)
-                    Utils.shared.updateFavoriteBadge(self.tabBarController?.tabBar, .add)
-                    completionHandler(true)
+            let result = FavoritesManager.shared.update(country: country, action: .add)
+            if result {
+                Utils.shared.updateFavoriteBadge(self.tabBarController?.tabBar, .add)
+                if !FavoritesManager.recentFavorites.contains(country.name.common) {
+                    FavoritesManager.recentFavorites.insert(country.name.common)
                 }
+                completionHandler(true)
             }
+            completionHandler(false)
         }
 
         favorite.image = UIImage(systemName: "star.fill")

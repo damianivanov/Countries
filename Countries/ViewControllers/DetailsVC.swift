@@ -113,33 +113,14 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
                 add(childVC: CFMapsButtons(country: country), to: self.mapsButtons)
             } catch {
                 if let cfError = error as? CFError {
-                    presentCFAlertOnMainThread(title: Messages.somethingWentWrong, bodyMessage: cfError.rawValue, buttonText: Messages.okMessage)
+                    presentCFAlertOnMainThread(title: Messages.somethingWentWrong, 
+                                               bodyMessage: cfError.rawValue, buttonText: Messages.okMessage)
                 } else {
                     print(error.localizedDescription)
                 }
             }
         }
     }
-
-//        NetworkManager.shared.getCountry(country: countryName) { [weak self] country, error in
-//            guard let self = self else {return}
-//            guard let country = country else {
-//                self.presentCFAlertOnMainThread(title: Messages.somethingWentWrong,
-//                                                bodyMessage: error?.rawValue ?? "",
-//                                                buttonText: Messages.okMessage)
-//                DispatchQueue.main.async {
-//                    self.mapsButtons.isHidden = true
-//                }
-//                return
-//            }
-//            DispatchQueue.main.async {
-//                guard let country = country.first else {return}
-//                self.country = country
-//                self.add(childVC: CFHeaderInfo(country: country), to: self.headerView)
-//                self.add(childVC: CFMapsButtons(country: country), to: self.mapsButtons)
-//            }
-//        }
-//    }
 
     private func loadScrollView() {
         DispatchQueue.main.async {
@@ -158,17 +139,6 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
             }
         }
     }
-
-//        NetworkManager.shared.getCountryDescription(country: countryName) { [weak self] result in
-//            guard let self = self else {return}
-//            switch result {
-//            case .success(let response):
-//                updateUI(response)
-//            case .failure(let error):
-//                print(error.localizedDescription)
-//            }
-//        }
-//   }
 
     private func updateUI(_ response: QueryResponse) {
         guard let longInfo = response.query.pages.first?.value.extract else {return}

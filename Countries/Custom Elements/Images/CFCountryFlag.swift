@@ -26,17 +26,7 @@ class CFCountryFlag: UIImageView {
     func downloadFlag(urlString: String) {
         Task {
             image = await NetworkManager.shared.downloadFlagImage(flagURL: urlString)
-                    ?? UIImage(named: "placeholderImage")
-
+            ?? UIImage(named: "placeholderImage")
         }
     }
-//        NetworkManager.shared.downlodImage(imageURL: urlString) {[weak self] data, _ in
-//            guard let self = self else {return}
-//            if let data = data {
-//                DispatchQueue.main.async {
-//                    self.image = UIImage(data: data as Data)
-//                }
-//            }
-//        }
-
 }

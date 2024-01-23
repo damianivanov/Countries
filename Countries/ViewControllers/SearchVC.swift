@@ -16,8 +16,6 @@ class SearchVC: UIViewController {
     let allCountriesButton = CFButton(backgroundColor: .systemGreen, title: "All Countries")
     var isCountryEntered: Bool { return !countryTextField.text!.isEmpty }
     let buttonPadding: CGFloat = 40
-    var recentlyFavorited: Set<String> = Set<String>()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -32,19 +30,9 @@ class SearchVC: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
         addObservers()
-        recentlyFavorited = Set<String>()
+    }
 
-    }
-    override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name("addBadgeSearch"), object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name("removebadgeSearch"), object: nil)
-        recentlyFavorited = Set<String>()
-    }
     private func addObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(addBadge),
-                                               name: Notification.Name("addBadgeSearch"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(removeBadge),
-                                               name: Notification.Name("removebadgeSearch"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
                                                name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
@@ -136,22 +124,6 @@ class SearchVC: UIViewController {
         UIView.animate(withDuration: 0.3) { [weak self] in
             guard let self = self else { return }
             self.view.frame.origin.y = 0
-        }
-    }
-
-    @objc private func addBadge(notification: NSNotification) {
-        guard let countryName = notification.userInfo?.first?.value as? String else {return}
-        if !recentlyFavorited.contains(countryName) {
-            recentlyFavorited.insert(countryName)
-            Utils.shared.updateFavoriteBadge(tabBarController?.tabBar, .add)
-        }
-    }
-
-    @objc private func removeBadge(notification: NSNotification) {
-        guard let countryName = notification.userInfo?.first?.value as? String else {return}
-        if recentlyFavorited.contains(countryName) {
-            recentlyFavorited.remove(countryName)
-            Utils.shared.updateFavoriteBadge(tabBarController?.tabBar, .remove)
         }
     }
 }

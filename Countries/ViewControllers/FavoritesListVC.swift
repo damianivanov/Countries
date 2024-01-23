@@ -11,30 +11,25 @@ class FavoritesListVC: UIViewController {
 
     var collectionView: UICollectionView!
     var favorites: [CountryShort] = []
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        addObservers()
         configure()
+    }
+
+    fileprivate func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(addBadge),
+                                               name: Notification.Name("addBadge"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(removeBadge),
+                                               name: Notification.Name("removeBadge"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updatedFavorites),
+                                               name: Notification.Name("reloadData"), object: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        NotificationCenter.default.addObserver(self, selector: #selector(updatedFavorites),
-                                             name: Notification.Name("reloadData"), object: nil)
         loadFavorites()
-        Utils.shared.removeBadgeFavorite(tabBarController?.tabBar)
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-        if favorites.isEmpty {
-            view.subviews.forEach { subView in
-                if type(of: subView) == CFEmptyView.self {
-                    subView.removeFromSuperview()
-                }
-            }
-        }
-        NotificationCenter.default.removeObserver(self, name: Notification.Name("reloadData"), object: nil)
+        FavoritesManager.shared.removeBadgeFavorite(tabBarController!.tabBar)
     }
 
     private func configure() {
@@ -55,20 +50,41 @@ class FavoritesListVC: UIViewController {
         collectionView.register(FavoritesViewCell.self, forCellWithReuseIdentifier: FavoritesViewCell.cellIdentifier)
     }
 
+    @objc private func addBadge(notification: NSNotification) {
+        guard let countryName = notification.userInfo?.first?.value as? String else {return}
+        if !FavoritesManager.recentFavorites.contains(countryName) {
+            FavoritesManager.recentFavorites.insert(countryName)
+            Utils.shared.updateFavoriteBadge(tabBarController?.tabBar, .add)
+        }
+    }
+
+    @objc private func removeBadge(notification: NSNotification) {
+        guard let countryName = notification.userInfo?.first?.value as? String else {return}
+        if FavoritesManager.recentFavorites.contains(countryName) {
+            FavoritesManager.recentFavorites.remove(countryName)
+        }
+        Utils.shared.updateFavoriteBadge(tabBarController?.tabBar, .remove)
+    }
+
     @objc private func updatedFavorites(notification: NSNotification) {
         self.dismiss(animated: true)
         loadFavorites()
     }
 
     private func loadFavorites() {
-        FavoritesManager.getFavorites { result in
-            switch result {
-            case .success(let favorites):
-                self.updateUI(favorites: favorites)
-            case . failure(let error):
-                self.presentCFAlertOnMainThread(title: Messages.somethingWentWrong,
-                                                bodyMessage: error.localizedDescription, buttonText: Messages.okMessage)
+        do {
+            let favorites = try FavoritesManager.shared.getFavorites()
+            updateUI(favorites: favorites)
+        } catch {
+            self.presentCFAlertOnMainThread(title: Messages.somethingWentWrong,
+                                            bodyMessage: error.localizedDescription, buttonText: Messages.okMessage)
+        }
+    }
 
+    fileprivate func clearEmptyState() {
+        view.subviews.forEach { subView in
+            if type(of: subView) == CFEmptyView.self {
+                subView.removeFromSuperview()
             }
         }
     }
@@ -79,8 +95,14 @@ class FavoritesListVC: UIViewController {
             DispatchQueue.main.async {
                 self.emptyStateView(message: Messages.emptyFavorites, in: self.view)
             }
+        }else{
+            clearEmptyState()
         }
         DispatchQueue.main.async { self.collectionView.reloadData()}
+    }
+
+    deinit{
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

@@ -23,7 +23,7 @@ class CFHeaderInfo: UIViewController {
     var favoriteIconImageView = UIImageView()
 
     var isFavorited: Bool {
-        return FavoritesManager.isAlredyFavorited(country: CountryShort(flags: country.flags, name: country.name))
+        return FavoritesManager.shared.isAlredyFavorited(country: CountryShort(flags: country.flags, name: country.name))
     }
 
     let favoriteIconString: String = "star"
@@ -141,31 +141,20 @@ class CFHeaderInfo: UIViewController {
     @objc func favorited() {
         let favoriteCountry = CountryShort(flags: country.flags, name: country.name)
         if isFavorited {
-            FavoritesManager.update(country: favoriteCountry, actionType: .remove) {[weak self] error in
-                guard let self = self else {return}
-                guard error != nil else {
-                    self.favoriteIconImageView.image = UIImage(systemName: favoriteIconString)
-                    NotificationCenter.default.post(name: Notification.Name("removeBadge"),
-                                                    object: nil, userInfo: ["countryName": country.name.common])
-                    NotificationCenter.default.post(name: Notification.Name("removebadgeSearch"),
-                                                    object: nil, userInfo: ["countryName": country.name.common])
-                    return
-                }
+            let result = FavoritesManager.shared.update(country: favoriteCountry, action: .remove)
+            if result {
+                self.favoriteIconImageView.image = UIImage(systemName: favoriteIconString)
+                NotificationCenter.default.post(name: Notification.Name("removeBadge"),
+                                                object: nil, userInfo: ["countryName":country.name.common])
             }
         } else {
-            FavoritesManager.update(country: favoriteCountry, actionType: .add) {[weak self] error in
-                guard let self = self else {return}
-                guard error != nil else {
-                    self.favoriteIconImageView.image = UIImage(systemName: favoriteFillIconString)
-                    NotificationCenter.default.post(name: Notification.Name("addBadge"),
-                                                    object: nil, userInfo: ["countryName": country.name.common])
-                    NotificationCenter.default.post(name: Notification.Name("addBadgeSearch"),
-                                                    object: nil, userInfo: ["countryName": country.name.common])
-                    return
-                }
+            let result = FavoritesManager.shared.update(country: favoriteCountry, action: .add)
+            if result {
+                self.favoriteIconImageView.image = UIImage(systemName: favoriteFillIconString)
+                NotificationCenter.default.post(name: Notification.Name("addBadge"),
+                                                object: nil, userInfo: ["countryName": country.name.common])
             }
         }
-
         NotificationCenter.default.post(name: Notification.Name("reloadData"), object: nil)
     }
 }
