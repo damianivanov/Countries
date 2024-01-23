@@ -16,6 +16,7 @@ class SearchVC: UIViewController {
     let allCountriesButton = CFButton(backgroundColor: .systemGreen, title: "All Countries")
     var isCountryEntered: Bool { return !countryTextField.text!.isEmpty }
     let buttonPadding: CGFloat = 40
+    var recentlyFavorited: Set<String> = Set<String>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,21 +26,33 @@ class SearchVC: UIViewController {
         configureButtonsView()
         configureSubViews()
         createDismissKeyboardTapGesture()
+    }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+        addObservers()
+        recentlyFavorited = Set<String>()
+
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("addBadgeSearch"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("removebadgeSearch"), object: nil)
+        recentlyFavorited = Set<String>()
+    }
+    private func addObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(addBadge),
+                                               name: Notification.Name("addBadgeSearch"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(removeBadge),
+                                               name: Notification.Name("removebadgeSearch"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow),
                                                name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide),
                                                name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: true)
-
-    }
-
-    private func configureButtonsView(){
-        buttonsView.addSubviews(allCountriesButton,searchCountryButton)
+    private func configureButtonsView() {
+        buttonsView.addSubviews(allCountriesButton, searchCountryButton)
         NSLayoutConstraint.activate([
             allCountriesButton.bottomAnchor.constraint(equalTo: buttonsView.bottomAnchor, constant: -Constants.padding),
             allCountriesButton.leadingAnchor.constraint(equalTo: buttonsView.leadingAnchor, constant: buttonPadding),
@@ -49,15 +62,14 @@ class SearchVC: UIViewController {
             searchCountryButton.bottomAnchor.constraint(equalTo: allCountriesButton.topAnchor,
                                                         constant: -Constants.padding),
             searchCountryButton.leadingAnchor.constraint(equalTo: buttonsView.leadingAnchor, constant: buttonPadding),
-            searchCountryButton.trailingAnchor.constraint(equalTo: buttonsView.trailingAnchor, constant: -buttonPadding),
+            searchCountryButton.trailingAnchor.constraint(equalTo: buttonsView.trailingAnchor,
+                                                          constant: -buttonPadding),
             searchCountryButton.heightAnchor.constraint(equalToConstant: Constants.buttonHeight)
-
-
         ])
     }
 
     private func configureUI() {
-        view.addSubviews(logoImageView, countryTextField,buttonsView ,allCountriesButton, searchCountryButton)
+        view.addSubviews(logoImageView, countryTextField, buttonsView, allCountriesButton, searchCountryButton)
         view.tamicFalse()
     }
 
@@ -105,8 +117,6 @@ class SearchVC: UIViewController {
                                        bodyMessage: Messages.emptyCountrySearch, buttonText: Messages.okMessage)
             return
         }
-        let detailsVC = DetailsVC()
-        detailsVC.countryName = countryTextField.text
         let nav = Utils.shared.getSheetDetailsVC(countryName: countryTextField.text!)
         countryTextField.resignFirstResponder()
         present(nav, animated: true, completion: nil)
@@ -129,10 +139,21 @@ class SearchVC: UIViewController {
         }
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+    @objc private func addBadge(notification: NSNotification) {
+        guard let countryName = notification.userInfo?.first?.value as? String else {return}
+        if !recentlyFavorited.contains(countryName) {
+            recentlyFavorited.insert(countryName)
+            Utils.shared.updateFavoriteBadge(tabBarController?.tabBar, .add)
+        }
     }
 
+    @objc private func removeBadge(notification: NSNotification) {
+        guard let countryName = notification.userInfo?.first?.value as? String else {return}
+        if recentlyFavorited.contains(countryName) {
+            recentlyFavorited.remove(countryName)
+            Utils.shared.updateFavoriteBadge(tabBarController?.tabBar, .remove)
+        }
+    }
 }
 
 extension SearchVC: UITextFieldDelegate {

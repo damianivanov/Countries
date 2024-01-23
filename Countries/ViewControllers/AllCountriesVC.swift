@@ -7,6 +7,7 @@
 
 import UIKit
 
+@MainActor
 class AllCountriesVC: UIViewController {
 
     let tableView = UITableView()
@@ -73,22 +74,36 @@ class AllCountriesVC: UIViewController {
     }
 
     private func fetchData() {
-        self.showLoadingView()
-        NetworkManager.shared.getAllCountries { [weak self] (countryResponse, error) in
-            guard let self = self else {return}
-            DispatchQueue.main.async {self.dismissLoadingView()}
-            guard let countryResponse = countryResponse else {
-                self.presentCFAlertOnMainThread(title: Messages.somethingWentWrong,
-                                                bodyMessage: error?.rawValue ?? "", buttonText: Messages.okMessage)
-                return
+        showLoadingView()
+        Task {
+            do {
+                let countryResponse = try await NetworkManager.shared.getAllCountries()
+                allCountries = countryResponse.sorted(by: { $0.name.common < $1.name.common })
+                updateData(on: allCountries)
+                dismissLoadingView()
 
-            }
-            self.allCountries = countryResponse.sorted(by: { $0.name.common < $1.name.common })
-            DispatchQueue.main.async {
-                self.updateData(on: self.allCountries)
+            } catch {
+                presentCFAlertOnMainThread(title: Messages.somethingWentWrong,
+                                           bodyMessage: error.localizedDescription, buttonText: Messages.okMessage)
             }
         }
+
     }
+
+//        NetworkManager.shared.getAllCountries { [weak self] (countryResponse, error) in
+//            guard let self = self else {return}
+//            DispatchQueue.main.async {self.dismissLoadingView()}
+//            guard let countryResponse = countryResponse else {
+//                self.presentCFAlertOnMainThread(title: Messages.somethingWentWrong,
+//                                                bodyMessage: error?.rawValue ?? "", buttonText: Messages.okMessage)
+//                return
+//
+//            }
+//            self.allCountries = countryResponse.sorted(by: { $0.name.common < $1.name.common })
+//            DispatchQueue.main.async {
+//                self.updateData(on: self.allCountries)
+//            }
+//        }
 
     private func addObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(addBadge),

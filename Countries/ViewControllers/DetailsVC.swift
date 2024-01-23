@@ -8,6 +8,7 @@
 import UIKit
 import MapKit
 
+@MainActor
 class DetailsVC: UIViewController, UIScrollViewDelegate {
 
     var countryName: String!
@@ -32,7 +33,6 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
     }
 
     @objc private func dismissVC() {
-        //        photosView = UIView(frame: .zero)
         dismiss(animated: true)
     }
 
@@ -49,6 +49,7 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
     private func layoutUI() {
         view.addSubviews(headerView, photosView, countryInfo, mapsButtons)
         view.tamicFalse()
+        let height = UIScreen.main.bounds.height < 800 ? Constants.heightScrollViewItemSM : Constants.heightScrollViewItem
 
         countryInfo.layer.cornerRadius = 15
         countryInfo.clipsToBounds = true
@@ -62,18 +63,18 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
             photosView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: Constants.padding),
             photosView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             photosView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            photosView.heightAnchor.constraint(equalToConstant: Constants.heightScrollViewItem),
+            photosView.heightAnchor.constraint(equalToConstant: height),
 
             countryInfo.topAnchor.constraint(equalTo: photosView.bottomAnchor, constant: Constants.padding),
             countryInfo.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding),
             countryInfo.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
-//            countryInfo.heightAnchor.constraint(equalToConstant: Constants.viewHeight*2),
+            //            countryInfo.heightAnchor.constraint(equalToConstant: Constants.viewHeight*2),
 
             mapsButtons.topAnchor.constraint(equalTo: countryInfo.bottomAnchor, constant: Constants.padding),
             mapsButtons.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Constants.padding),
             mapsButtons.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Constants.padding),
             mapsButtons.heightAnchor.constraint(equalToConstant: Constants.buttonHeight + 2*Constants.padding)
-//            mapsButtons.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.padding)
+            //            mapsButtons.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -Constants.padding)
 
         ])
 
@@ -104,25 +105,41 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
     }
 
     private func fetchCountry() {
-        NetworkManager.shared.getCountry(country: countryName) { [weak self] country, error in
-            guard let self = self else {return}
-            guard let country = country else {
-                self.presentCFAlertOnMainThread(title: Messages.somethingWentWrong,
-                                                bodyMessage: error?.rawValue ?? "",
-                                                buttonText: Messages.okMessage)
-                DispatchQueue.main.async {
-                    self.mapsButtons.isHidden = true
+        Task {
+            do {
+                let country = try await NetworkManager.shared.getCountry(country: countryName)
+                guard let country = country?.first else {return}
+                add(childVC: CFHeaderInfo(country: country), to: self.headerView)
+                add(childVC: CFMapsButtons(country: country), to: self.mapsButtons)
+            } catch {
+                if let cfError = error as? CFError {
+                    presentCFAlertOnMainThread(title: Messages.somethingWentWrong, bodyMessage: cfError.rawValue, buttonText: Messages.okMessage)
+                } else {
+                    print(error.localizedDescription)
                 }
-                return
-            }
-            DispatchQueue.main.async {
-                guard let country = country.first else {return}
-                self.country = country
-                self.add(childVC: CFHeaderInfo(country: country), to: self.headerView)
-                self.add(childVC: CFMapsButtons(country: country), to: self.mapsButtons)
             }
         }
     }
+
+//        NetworkManager.shared.getCountry(country: countryName) { [weak self] country, error in
+//            guard let self = self else {return}
+//            guard let country = country else {
+//                self.presentCFAlertOnMainThread(title: Messages.somethingWentWrong,
+//                                                bodyMessage: error?.rawValue ?? "",
+//                                                buttonText: Messages.okMessage)
+//                DispatchQueue.main.async {
+//                    self.mapsButtons.isHidden = true
+//                }
+//                return
+//            }
+//            DispatchQueue.main.async {
+//                guard let country = country.first else {return}
+//                self.country = country
+//                self.add(childVC: CFHeaderInfo(country: country), to: self.headerView)
+//                self.add(childVC: CFMapsButtons(country: country), to: self.mapsButtons)
+//            }
+//        }
+//    }
 
     private func loadScrollView() {
         DispatchQueue.main.async {
@@ -132,16 +149,26 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
     }
 
     private func loadCountryInfo() {
-        NetworkManager.shared.getCountryDescription(country: countryName) { [weak self] result in
-            guard let self = self else {return}
-            switch result {
-            case .success(let response):
-                updateUI(response)
-            case .failure(let error):
+        Task {
+            do {
+                let responseQuery = try await NetworkManager.shared.getCountryDescription(country: countryName)
+                updateUI(responseQuery)
+            } catch {
                 print(error.localizedDescription)
             }
         }
     }
+
+//        NetworkManager.shared.getCountryDescription(country: countryName) { [weak self] result in
+//            guard let self = self else {return}
+//            switch result {
+//            case .success(let response):
+//                updateUI(response)
+//            case .failure(let error):
+//                print(error.localizedDescription)
+//            }
+//        }
+//   }
 
     private func updateUI(_ response: QueryResponse) {
         guard let longInfo = response.query.pages.first?.value.extract else {return}

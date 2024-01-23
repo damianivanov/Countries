@@ -80,8 +80,7 @@ class Utils {
         return regex?.stringByReplacingMatches(in: input, range: range, withTemplate: "") ?? ""
     }
 
-    func getSheetDetailsVC(countryName: String) -> UINavigationController {
-
+    @MainActor func getSheetDetailsVC(countryName: String) -> UINavigationController {
         let detailsVC = DetailsVC()
         let nav = UINavigationController(rootViewController: detailsVC)
         detailsVC.countryName = countryName
@@ -106,6 +105,9 @@ struct Constants {
 
     static let heightScrollViewItem: CGFloat = 250
     static let widthScrollViewItem: CGFloat = 200
+
+    static let heightScrollViewItemSM: CGFloat = 150
+    static let widthScrollViewItemSM: CGFloat = 120
 
     static let viewHeight: CGFloat = 120
 

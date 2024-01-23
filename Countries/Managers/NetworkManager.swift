@@ -9,8 +9,8 @@ import UIKit
 
 class NetworkManager {
     static let shared = NetworkManager()
-    let flagsCache = NSCache<NSString, NSData>()
-    let imageCache = NSCache<NSString, NSData>()
+    let flagsCache = NSCache<NSString, UIImage>()
+    let imageCache = NSCache<NSString, UIImage>()
 
     private init() {
         flagsCache.countLimit = 300
@@ -42,8 +42,8 @@ class NetworkManager {
 
             do {
                 let decoder = JSONDecoder()
-                let country = try decoder.decode([Country].self, from: data)
-                completed(country, nil)
+                let countries = try decoder.decode([Country].self, from: data)
+                completed(countries, nil)
             } catch {
                 print(error)
                 completed(nil, .invalidData)
@@ -51,6 +51,48 @@ class NetworkManager {
 
         }
         task.resume()
+    }
+
+    func getCountry(country: String) async throws -> [Country]? {
+        let endpoint = "https://restcountries.com/v3.1/name/\(country)"
+
+        guard let urlString = endpoint.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { throw CFError.invalidURL}
+
+        guard let url = URL(string: urlString) else {
+            throw CFError.invalidURL
+        }
+        let (data, response) = try await URLSession.shared.data(from: url)
+
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw CFError.invalidResponse
+        }
+
+        do {
+            let decoder = JSONDecoder()
+            return try decoder.decode([Country].self, from: data)
+        } catch {
+            throw error
+        }
+    }
+
+    func getAllCountries() async throws -> [CountryShort] {
+        let endpoint = "https://restcountries.com/v3.1/"
+        let endpointAllCountries = "\(endpoint)all?fields=flags,name"
+        guard let url = URL(string: endpointAllCountries) else {
+            throw CFError.invalidURL
+        }
+        let (data, response) = try await URLSession.shared.data(from: url)
+
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw CFError.invalidResponse
+        }
+
+        do {
+            let decoder = JSONDecoder()
+            return try decoder.decode([CountryShort].self, from: data)
+        } catch {
+            throw error
+        }
     }
 
     func getAllCountries(completed: @escaping ([CountryShort]?, CFError?) -> Void) {
@@ -87,47 +129,75 @@ class NetworkManager {
         task.resume()
     }
 
-    func downlodImage(imageURL: String, completed: @escaping (NSData?, CFError?) -> Void) {
-        if let imageData = imageCache.object(forKey: imageURL as NSString) {
-            completed(imageData, nil)
-            return
-        }
-        if let imageData = flagsCache.object(forKey: imageURL as NSString) {
-            completed(imageData, nil)
-            return
-        }
-        guard let url = URL(string: imageURL) else {
-            completed(nil, .invalidURL)
-            return
-        }
+//    func downlodImage(imageURL: String, completed: @escaping (NSData?, CFError?) -> Void) {
+//        if let imageData = imageCache.object(forKey: imageURL as NSString) {
+//            completed(imageData, nil)
+//            return
+//        }
+//        if let imageData = flagsCache.object(forKey: imageURL as NSString) {
+//            completed(imageData, nil)
+//            return
+//        }
+//        guard let url = URL(string: imageURL) else {
+//            completed(nil, .invalidURL)
+//            return
+//        }
+//
+//        let task = URLSession.shared.downloadTask(with: url) {[weak self] localUrl, response, error in
+//            guard let self = self else {return}
+//            if error != nil {
+//                completed(nil, .invalidData)
+//                return
+//            }
+//
+//            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+//                completed(nil, .invalidResponse)
+//                return
+//            }
+//
+//            guard let localUrl = localUrl else {
+//                completed(nil, .invalidData)
+//                return
+//            }
+//            do {
+//                let data = try NSData(contentsOf: localUrl)
+//                imageCache.setObject(data!, forKey: imageURL as NSString)
+//                completed(data, nil)
+//            } catch {
+//                print(error.localizedDescription)
+//                completed(nil, .invalidData)
+//                return
+//            }
+//        }
+//        task.resume()
+//    }
 
-        let task = URLSession.shared.downloadTask(with: url) {[weak self] localUrl, response, error in
-            guard let self = self else {return}
-            if error != nil {
-                completed(nil, .invalidData)
-                return
-            }
+    func downloadFlagImage(flagURL: String) async -> UIImage? {
+        let cacheKey = flagURL as NSString
+        if let flagData = flagsCache.object(forKey: cacheKey) {return flagData}
+        guard let url = URL(string: flagURL) else {return nil}
+        guard let image =  await downloadImageData(from: url) else {return nil}
+        flagsCache.setObject(image, forKey: cacheKey)
+        return image
+    }
 
-            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                completed(nil, .invalidResponse)
-                return
-            }
+    func downloadUnsplashImage(imageURL: String) async -> UIImage? {
+        let cacheKey = imageURL as NSString
+        if let imageData = imageCache.object(forKey: cacheKey) {return imageData}
+        guard let url = URL(string: imageURL) else {return nil}
+        guard let image = await downloadImageData(from: url) else {return nil}
+        imageCache.setObject(image, forKey: cacheKey)
+        return image
+    }
 
-            guard let localUrl = localUrl else {
-                completed(nil, .invalidData)
-                return
-            }
-            do {
-                let data = try NSData(contentsOf: localUrl)
-                imageCache.setObject(data!, forKey: imageURL as NSString)
-                completed(data, nil)
-            } catch {
-                print(error.localizedDescription)
-                completed(nil, .invalidData)
-                return
-            }
+    private func downloadImageData(from url: URL) async -> UIImage? {
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            guard let image = UIImage(data: data) else {return nil}
+            return image
+        } catch {
+            return nil
         }
-        task.resume()
     }
 
     func searchImagesQuery(query: String, page: Int, completed: @escaping ([UnsplashURLs]?, CFError?) -> Void) {
@@ -171,6 +241,30 @@ class NetworkManager {
         task.resume()
     }
 
+    func searchImagesQuery(query: String, page: Int) async throws -> [UnsplashURLs] {
+        guard let clientKey = Bundle.main.object(forInfoDictionaryKey: "UnsplashKey") as? String else {
+            throw CFError.invalidClientKey
+        }
+        let endpoint = "https://api.unsplash.com/search/photos"
+        let orderBy = "order_by=popular&orientation=portrait"
+        guard let stringUrl = "\(endpoint)?query=\(query)&client_id=\(clientKey)&page=\(page)&\(orderBy)"
+            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {throw CFError.invalidURL}
+        guard let url = URL(string: stringUrl) else {throw CFError.invalidURL}
+
+        let (data, response) = try await URLSession.shared.data(from: url)
+
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw CFError.invalidResponse
+        }
+        do {
+            let decoder = JSONDecoder()
+            let unsplashResponse = try decoder.decode(UnsplashResponse.self, from: data)
+            return unsplashResponse.results.map {$0.urls}
+        } catch {
+            throw error
+        }
+    }
+
     func getCountryDescription(country: String, completed: @escaping (Result<QueryResponse, CFError>) -> Void) {
         let endpoint = "https://en.wikipedia.org/w/api.php?"
         let format = "format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&"
@@ -205,4 +299,23 @@ class NetworkManager {
 
     }
 
+    func getCountryDescription(country: String) async throws -> QueryResponse {
+        let endpoint = "https://en.wikipedia.org/w/api.php?"
+        let format = "format=json&action=query&prop=extracts&exintro&explaintext&redirects=1&"
+        guard let stringURL = "\(endpoint)\(format)titles=\(country)"
+            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {throw CFError.invalidURL }
+        guard let url = URL(string: stringURL) else {throw CFError.invalidURL}
+
+        let (data, response) = try await URLSession.shared.data(from: url)
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw CFError.invalidResponse
+        }
+
+        do {
+            let decoder = JSONDecoder()
+            return try decoder.decode(QueryResponse.self, from: data)
+        } catch {
+            throw error
+        }
+    }
 }

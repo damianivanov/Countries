@@ -19,7 +19,7 @@ class FavoritesViewCell: UICollectionViewCell {
         configureConstraints()
     }
 
-    convenience init(backgroundColor: UIColor, country: CountryShort){
+    convenience init(backgroundColor: UIColor, country: CountryShort) {
         self.init(frame: .zero)
         self.backgroundColor = backgroundColor
         set(country)
@@ -44,7 +44,7 @@ class FavoritesViewCell: UICollectionViewCell {
             countryNameTitle.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

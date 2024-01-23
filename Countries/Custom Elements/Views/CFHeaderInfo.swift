@@ -147,6 +147,8 @@ class CFHeaderInfo: UIViewController {
                     self.favoriteIconImageView.image = UIImage(systemName: favoriteIconString)
                     NotificationCenter.default.post(name: Notification.Name("removeBadge"),
                                                     object: nil, userInfo: ["countryName": country.name.common])
+                    NotificationCenter.default.post(name: Notification.Name("removebadgeSearch"),
+                                                    object: nil, userInfo: ["countryName": country.name.common])
                     return
                 }
             }
@@ -157,11 +159,13 @@ class CFHeaderInfo: UIViewController {
                     self.favoriteIconImageView.image = UIImage(systemName: favoriteFillIconString)
                     NotificationCenter.default.post(name: Notification.Name("addBadge"),
                                                     object: nil, userInfo: ["countryName": country.name.common])
+                    NotificationCenter.default.post(name: Notification.Name("addBadgeSearch"),
+                                                    object: nil, userInfo: ["countryName": country.name.common])
                     return
                 }
             }
         }
-        NotificationCenter.default.post(name: Notification.Name("reloadData"), object: nil)
 
+        NotificationCenter.default.post(name: Notification.Name("reloadData"), object: nil)
     }
 }

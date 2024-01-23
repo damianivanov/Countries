@@ -14,6 +14,8 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
     var scrollLock = false
     var page = 1
     let maxPage = 2
+    var height: CGFloat = 0
+    var width: CGFloat = 0
     var itemsCount: CGFloat {
         return CGFloat(unsplashLinks.count + ((page - 1) * 10))
     }
@@ -34,17 +36,29 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
 
+    fileprivate func screenSize() {
+        let screenHeight = UIScreen.main.bounds.height
+        if screenHeight < 800 {
+            height = Constants.heightScrollViewItemSM
+            width = Constants.widthScrollViewItemSM
+        } else {
+            height = Constants.heightScrollViewItem
+            width = Constants.widthScrollViewItem
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        screenSize()
         self.scrollView.delegate = self
         configureScrollView()
         getPhotosLinks()
     }
 
     func updateContentSize() {
-        let contentWidth = Constants.widthScrollViewItem * itemsCount + Constants.padding * (itemsCount+1)
+        let contentWidth = width * itemsCount + Constants.padding * (itemsCount+1)
         DispatchQueue.main.async {
-            self.scrollView.contentSize = CGSize(width: contentWidth, height: Constants.heightScrollViewItem)
+            self.scrollView.contentSize = CGSize(width: contentWidth, height: self.height)
         }
     }
 
@@ -59,46 +73,68 @@ class CFScrollableView: UIViewController, UIScrollViewDelegate {
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.heightAnchor.constraint(equalToConstant: Constants.heightScrollViewItem)
+            scrollView.heightAnchor.constraint(equalToConstant: height)
         ])
     }
 
     private func getPhotosLinks() {
-        DispatchQueue.global().async {[weak self] in
-            guard let self = self else {return}
-            NetworkManager.shared.searchImagesQuery(query: countryName, page: page) {response, _ in
-                guard let urls = response else {return}
-                self.unsplashLinks = urls
-                DispatchQueue.main.async {
-                    self.populateScrollView()
-                    self.updateContentSize()
-                }
+        Task {
+            do {
+                self.unsplashLinks = try await NetworkManager.shared.searchImagesQuery(query: countryName, page: page)
+                populateScrollView()
+                updateContentSize()
+            } catch {
+                print(error.localizedDescription)
             }
         }
     }
 
+//        DispatchQueue.global().async {[weak self] in
+//            guard let self = self else {return}
+//            NetworkManager.shared.searchImagesQuery(query: countryName, page: page) {response, _ in
+//                guard let urls = response else {return}
+//                self.unsplashLinks = urls
+//                DispatchQueue.main.async {
+//                    self.populateScrollView()
+//                    self.updateContentSize()
+//                }
+//            }
+//        }
+
+    @MainActor
     func populateScrollView() {
         for index in 0..<unsplashLinks.count {
-            DispatchQueue.global(qos: .userInitiated).async {
-                NetworkManager.shared.downlodImage(imageURL: self.unsplashLinks[index].regular) { data, _ in
-                    let frame = CGRect(x: self.getXposition(index,self.page), y: 0,
-                                       width: Constants.widthScrollViewItem, height: Constants.heightScrollViewItem)
-                    DispatchQueue.main.async {
-                        let subView = UIImageView(frame: frame)
-                        subView.image = UIImage(data: data! as Data)
-                        subView.contentMode = .scaleAspectFill
-                        subView.layer.cornerRadius = 15
-                        subView.clipsToBounds = true
-                        self.scrollView.addSubview(subView)
-                    }
-                }
+            let link = unsplashLinks[index].regular
+            Task {
+                let frame = CGRect(x: getXposition(index, page), y: 0,
+                                   width: width, height: height)
+                let subView = UIImageView(frame: frame)
+                subView.image = UIImage(named: "placeholderImage")
+                subView.contentMode = .scaleAspectFill
+                subView.layer.cornerRadius = 15
+                subView.clipsToBounds = true
+                scrollView.addSubview(subView)
+                subView.image = await NetworkManager.shared.downloadUnsplashImage(imageURL: link)
             }
         }
     }
-    
-    func getXposition(_ index: Int,_ page: Int) -> CGFloat {
-        let itemIndex:CGFloat = CGFloat(index + ((page-1)*10))
-        return CGFloat(Constants.widthScrollViewItem * itemIndex + (itemIndex+1) * Constants.padding)
+
+//                NetworkManager.shared.downlodImage(imageURL: self.unsplashLinks[index].regular) { data, _ in
+//                    let frame = CGRect(x: self.getXposition(index,self.page), y: 0,
+//                                       width: Constants.widthScrollViewItem, height: Constants.heightScrollViewItem)
+//                    DispatchQueue.main.async {
+//                        let subView = UIImageView(frame: frame)
+//                        subView.image = UIImage(data: data! as Data)
+//                        subView.contentMode = .scaleAspectFill
+//                        subView.layer.cornerRadius = 15
+//                        subView.clipsToBounds = true
+//                        self.scrollView.addSubview(subView)
+//                    }
+//                }
+
+    func getXposition(_ index: Int, _ page: Int) -> CGFloat {
+        let itemIndex: CGFloat = CGFloat(index + ((page-1)*10))
+        return CGFloat(width * itemIndex + (itemIndex+1) * Constants.padding)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
