@@ -27,8 +27,8 @@ class NetworkManager {
         }
         let (data, response) = try await URLSession.shared.data(from: url)
 
-        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-            throw CFError.invalidResponse
+        guard let response = response as? HTTPURLResponse, response.statusCode != 404 else {
+            throw CFError.invalidCountryName
         }
 
         do {

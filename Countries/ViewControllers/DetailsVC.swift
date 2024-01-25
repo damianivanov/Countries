@@ -18,7 +18,7 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
     var photosView = UIView()
     var countryInfo = UITextView()
     var mapsButtons = UIView()
-    var countryInfoSentences = 5
+    var countryInfoSentences = 4
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,11 +108,12 @@ class DetailsVC: UIViewController, UIScrollViewDelegate {
         Task {
             do {
                 let country = try await NetworkManager.shared.getCountry(country: countryName)
-                guard let country = country?.first else {return}
+                guard let country = country?.first else {self.dismissVC(); return}
                 add(childVC: CFHeaderInfo(country: country), to: self.headerView)
                 add(childVC: CFMapsButtons(country: country), to: self.mapsButtons)
             } catch {
                 if let cfError = error as? CFError {
+                    self.dismissVC()
                     presentCFAlertOnMainThread(title: Messages.somethingWentWrong,
                                                bodyMessage: cfError.rawValue, buttonText: Messages.okMessage)
                 } else {
